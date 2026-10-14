@@ -12,7 +12,7 @@ class FacturaService {
   //Obtener una factura
   //localhost:81/apiShalomAcademy/factura/1
   getFacturaById(FacturaId) {
-    return axios.get(BASE_URL + '/' + FacturaId);
+    return axios.get(BASE_URL + '/get/' + FacturaId);
   }
 }
 

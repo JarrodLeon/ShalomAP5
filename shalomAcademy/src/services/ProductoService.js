@@ -12,8 +12,8 @@ class ProductoService {
   //Obtener un producto
   //localhost:81/apiShalomAcademy/producto/1
   getProductoById(ProductoId) {
-    return axios.get(BASE_URL + '/' + ProductoId);
-  }
+  return axios.get(BASE_URL + '/get/' + ProductoId);
+}
 }
 
 export default new ProductoService();

@@ -12,7 +12,7 @@ class ReservaService {
   //Obtener una reserva
   //localhost:81/apiShalomAcademy/reserva/1
   getReservaById(ReservaId) {
-    return axios.get(BASE_URL + '/' + ReservaId);
+    return axios.get(BASE_URL + '/get/' + ReservaId);
   }
 }
 
