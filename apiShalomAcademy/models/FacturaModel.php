@@ -49,7 +49,7 @@ class FacturaModel
                      AND f.id_sucursal = (SELECT e.id_sucursal FROM usuario e
                                           WHERE e.id_usuario = $idEncargado AND e.id_rol = 2);";
             $vResultado = $this->enlace->ExecuteSQL($vSql);
-            if (!empty($vResultado)) { //Si se encuentra la factura
+            if (is_array($vResultado) && !empty($vResultado)) { //Si se encuentra la factura
                 $vResultado = $vResultado[0];
                 //Líneas de servicio (cada reserva asociada a la factura)
                 $vSqlServicios = "SELECT 'Servicio' AS tipo, s.nombre AS descripcion, 1 AS cantidad,
@@ -72,10 +72,10 @@ class FacturaModel
                 $productos = $this->enlace->ExecuteSQL($vSqlProductos);
                 //Unir servicios y productos en una sola lista de líneas
                 $lineas = [];
-                if (!empty($servicios)) {
+                if (is_array($servicios) && !empty($servicios)) {
                     $lineas = array_merge($lineas, $servicios);
                 }
-                if (!empty($productos)) {
+                if (is_array($productos) && !empty($productos)) {
                     $lineas = array_merge($lineas, $productos);
                 }
                 $vResultado->lineas = $lineas;

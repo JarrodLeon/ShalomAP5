@@ -12,6 +12,9 @@ import TableFacturas from './components/Factura/TableFacturas';
 import { DetailFactura } from './components/Factura/DetailFactura';
 import TableReservas from './components/Reserva/TableReservas';
 import { DetailReserva } from './components/Reserva/DetailReserva';
+import { CatalogServicios } from './components/Servicio/CatalogServicios';
+import { DetailServicio } from './components/Servicio/DetailServicio';
+import TableServicios from './components/Servicio/TableServicios';
 
 const rutas = createBrowserRouter(
   [
@@ -37,6 +40,15 @@ const rutas = createBrowserRouter(
         {
           path: '/mantenimiento-productos',
           element: <TableProductos />,
+        },
+        { path: '/catalogo-servicios/', 
+          element: <CatalogServicios /> 
+        },
+        { path: '/servicio/:id', 
+          element: <DetailServicio /> 
+        },
+        { path: '/mantenimiento-servicios', 
+          element: <TableServicios /> 
         },
         {
           path: '/factura',

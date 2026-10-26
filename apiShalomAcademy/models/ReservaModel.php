@@ -55,7 +55,7 @@ class ReservaModel
                      AND r.id_sucursal = (SELECT enc.id_sucursal FROM usuario enc
                                           WHERE enc.id_usuario = $idEncargado AND enc.id_rol = 2);";
             $vResultado = $this->enlace->ExecuteSQL($vSql);
-            if (!empty($vResultado)) { //Si se encuentra la reserva
+            if (is_array($vResultado) && !empty($vResultado)) { //Si se encuentra la reserva
                 return $vResultado[0];
             }
             return $vResultado;

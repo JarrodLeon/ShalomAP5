@@ -41,7 +41,7 @@ class ProductoModel
                      AND p.id_producto = $id;";
             //Ejecutar la consulta sql
             $vResultado = $this->enlace->ExecuteSQL($vSql);
-            if (!empty($vResultado)) { //Si se encuentra el producto
+            if (is_array($vResultado) && !empty($vResultado)) { //Si se encuentra el producto
                 return $vResultado[0];
             }
             return $vResultado;

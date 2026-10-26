@@ -20,12 +20,14 @@ require_once "controllers/core/Response.php";
 require_once "models/ProductoModel.php";
 require_once "models/ReservaModel.php";
 require_once "models/FacturaModel.php";
+require_once "models/ServicioModel.php";
 
 
 /***--- Agregar todos los controladores*/
 require_once "controllers/ProductoController.php";
 require_once "controllers/ReservaController.php";
 require_once "controllers/FacturaController.php";
+require_once "controllers/ServicioController.php";
 
 
 

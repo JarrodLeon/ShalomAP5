@@ -46,6 +46,8 @@ export default function Header() {
   const navItems = [
     { name: 'Productos', link: '/catalogo-productos/' }, //Enlace página catálogo de productos
     { name: 'Mantenimiento Productos', link: '/mantenimiento-productos' }, //Enlace página mantenimiento de productos
+    { name: 'Servicios', link: '/catalogo-servicios/' }, //Enlace página catálogo de servicios
+    { name: 'Mantenimiento Servicios', link: '/mantenimiento-servicios' }, //Enlace página mantenimiento de servicios
     { name: 'Reservas', link: '/reserva' }, //Enlace página historial de reservas
     { name: 'Facturas', link: '/factura' }, //Enlace página historial de facturación
   ];
