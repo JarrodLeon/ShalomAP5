@@ -1,5 +1,6 @@
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Grid from '@mui/material/Grid';
@@ -9,7 +10,6 @@ import { Link } from 'react-router-dom';
 import { Info } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import { formatMoneda } from '../../utils/formatters';
-import { formatDuracion } from '../../utils/servicioFormat';
 
 //Componente para mostrar la lista de servicios en formato tarjeta
 ListCardServicios.propTypes = {
@@ -17,6 +17,9 @@ ListCardServicios.propTypes = {
 };
 
 export function ListCardServicios({ data }) {
+  //Url para acceder a las imágenes guardadas en el API
+  const BASE_URL = import.meta.env.VITE_BASE_URL + 'uploads';
+
   return (
     <Grid container sx={{ p: 2 }} spacing={3}>
       {data &&
@@ -34,14 +37,19 @@ export function ListCardServicios({ data }) {
                 style={{ textAlign: 'center' }}
                 title={item.nombre}
               />
+              {/* Imagen del servicio (campo 2) */}
+              {item.imagen_url && (
+                <CardMedia
+                  component="img"
+                  height="240"
+                  image={`${BASE_URL}/${item.imagen_url}`}
+                  alt={item.nombre}
+                />
+              )}
               <CardContent sx={{ flexGrow: 1 }}>
-                {/* Edad recomendada (campo 2) */}
+                {/* Edad recomendada (campo 3) */}
                 <Typography variant="body1" gutterBottom>
                   <strong>Edad:</strong> {item.edad_recomendada}
-                </Typography>
-                {/* Duración de la clase (campo 3) */}
-                <Typography variant="body1" gutterBottom>
-                  <strong>Duración:</strong> {formatDuracion(item.tiempo_servicio)}
                 </Typography>
                 {/* Tarifa (campo 4) */}
                 <Typography variant="h6" align="right" color="primary">

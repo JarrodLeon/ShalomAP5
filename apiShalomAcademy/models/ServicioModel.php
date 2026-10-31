@@ -16,7 +16,7 @@ class ServicioModel
         try {
             //Consulta SQL
             $vSQL = "SELECT id_servicio, nombre, descripcion, tarifa, tiempo_servicio,
-                            modalidad, edad_recomendada
+                            modalidad, edad_recomendada, imagen_url
                      FROM servicio
                      ORDER BY id_servicio;";
             //Ejecutar la consulta y retornar la respuesta
@@ -32,7 +32,7 @@ class ServicioModel
         try {
             $id = (int) $id; //Evita inyección SQL
             $vSql = "SELECT id_servicio, nombre, descripcion, tarifa, tiempo_servicio,
-                            modalidad, edad_recomendada
+                            modalidad, edad_recomendada, imagen_url
                      FROM servicio
                      WHERE id_servicio = $id;";
             //Ejecutar la consulta sql
