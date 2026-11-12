@@ -13,6 +13,9 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Link } from 'react-router-dom';
 import ServicioService from '../../services/ServicioService';
@@ -28,7 +31,7 @@ const headCells = [
   { id: 'modalidad', numeric: false, label: 'Modalidad' },
   { id: 'tiempo_servicio', numeric: true, label: 'Duración' },
   { id: 'tarifa', numeric: true, label: 'Tarifa' },
-  { id: 'detail', numeric: false, label: 'Detalle', sortable: false },
+  { id: 'detail', numeric: false, label: 'Acciones', sortable: false },
 ];
 
 //Componente tabla (mantenimiento de servicios)
@@ -107,6 +110,16 @@ export default function TableServicios() {
                 value={filtro}
                 onChange={handleChangeFiltro}
               />
+              {/* Crear servicio */}
+              <Button
+                component={Link}
+                to="/servicio/crear/"
+                variant="contained"
+                color="secondary"
+                startIcon={<AddIcon />}
+              >
+                Crear servicio
+              </Button>
             </Toolbar>
             <TableContainer>
               <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -134,6 +147,15 @@ export default function TableServicios() {
                               color="primary"
                             >
                               <VisibilityIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Modificar">
+                            <IconButton
+                              component={Link}
+                              to={`/servicio/editar/${row.id_servicio}`}
+                              color="secondary"
+                            >
+                              <EditIcon />
                             </IconButton>
                           </Tooltip>
                         </TableCell>

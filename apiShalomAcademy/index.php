@@ -21,6 +21,11 @@ require_once "models/ProductoModel.php";
 require_once "models/ReservaModel.php";
 require_once "models/FacturaModel.php";
 require_once "models/ServicioModel.php";
+require_once "models/CategoriaModel.php";
+require_once "models/UsuarioModel.php";
+require_once "models/SucursalModel.php";
+require_once "models/HorarioModel.php";
+require_once "models/ImagenModel.php";
 
 
 /***--- Agregar todos los controladores*/
@@ -28,6 +33,11 @@ require_once "controllers/ProductoController.php";
 require_once "controllers/ReservaController.php";
 require_once "controllers/FacturaController.php";
 require_once "controllers/ServicioController.php";
+require_once "controllers/CategoriaController.php";
+require_once "controllers/UsuarioController.php";
+require_once "controllers/SucursalController.php";
+require_once "controllers/HorarioController.php";
+require_once "controllers/ImagenController.php";
 
 
 

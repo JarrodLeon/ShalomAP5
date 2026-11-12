@@ -14,6 +14,18 @@ class ServicioService {
   getServicioById(ServicioId) {
     return axios.get(BASE_URL + '/get/' + ServicioId);
   }
+  //Crear un servicio
+  createServicio(Servicio) {
+    return axios.post(BASE_URL, JSON.stringify(Servicio));
+  }
+  //Actualizar un servicio
+  updateServicio(Servicio) {
+    return axios({
+      method: 'put',
+      url: BASE_URL,
+      data: JSON.stringify(Servicio),
+    });
+  }
 }
 
 export default new ServicioService();

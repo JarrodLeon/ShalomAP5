@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Menu, MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -15,69 +16,107 @@ import Tooltip from '@mui/material/Tooltip';
 export default function Header() {
   //Gestión menu usuario
   const [anchorElUser, setAnchorEl] = useState(null);
-  //Gestión menu principal
+  //Gestión menu principal (pantallas pequeñas)
   const [anchorElPrincipal, setAnchorElPrincipal] = useState(null);
+  //Gestión menu de mantenimientos
+  const [anchorElMant, setAnchorElMant] = useState(null);
 
-  //Abierto menu usuario
+  //Abierto/cerrado menu usuario
   const handleUserMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  //Cerrado menu usuario
   const handleUserMenuClose = () => {
     setAnchorEl(null);
   };
-  //Abierto menu principal
+  //Abierto/cerrado menu principal
   const handleOpenPrincipalMenu = (event) => {
     setAnchorElPrincipal(event.currentTarget);
   };
-  //Cerrado menu principal
   const handleClosePrincipalMenu = () => {
     setAnchorElPrincipal(null);
+  };
+  //Abierto/cerrado menu de mantenimientos
+  const handleOpenMantMenu = (event) => {
+    setAnchorElMant(event.currentTarget);
+  };
+  const handleCloseMantMenu = () => {
+    setAnchorElMant(null);
   };
 
   //Lista enlaces menu usuario
   const userItems = [
-    { name: 'Login', link: '/user/login', login: false },
+    { name: 'Iniciar sesión', link: '/user/login', login: false },
     { name: 'Registrarse', link: '/user/create', login: false },
-    { name: 'Logout', link: '/user/logout', login: true },
+    { name: 'Cerrar sesión', link: '/user/logout', login: true },
   ];
 
   //Lista enlaces menu principal
   const navItems = [
-    { name: 'Productos', link: '/catalogo-productos/' }, //Enlace página catálogo de productos
-    { name: 'Mantenimiento Productos', link: '/mantenimiento-productos' }, //Enlace página mantenimiento de productos
-    { name: 'Servicios', link: '/catalogo-servicios/' }, //Enlace página catálogo de servicios
-    { name: 'Mantenimiento Servicios', link: '/mantenimiento-servicios' }, //Enlace página mantenimiento de servicios
-    { name: 'Reservas', link: '/reserva' }, //Enlace página historial de reservas
-    { name: 'Facturas', link: '/factura' }, //Enlace página historial de facturación
+    { name: 'Productos', link: '/catalogo-productos/' }, //Catálogo de productos
+    { name: 'Servicios', link: '/catalogo-servicios/' }, //Catálogo de servicios
+    { name: 'Reservas', link: '/reserva' }, //Historial de reservas
+    { name: 'Facturas', link: '/factura' }, //Historial de facturación
   ];
 
-  //Identificador menu principal
+  //Lista enlaces menu de mantenimientos
+  const mantItems = [
+    { name: 'Productos', link: '/mantenimiento-productos' },
+    { name: 'Servicios', link: '/mantenimiento-servicios' },
+    { name: 'Sucursales', link: '/mantenimiento-sucursales' },
+    { name: 'Horarios y bloqueos', link: '/horario' },
+  ];
+
+  //Identificadores de menus
   const menuIdPrincipal = 'menu-appbar';
+  const menuIdMant = 'menu-mantenimientos';
+  const userMenuId = 'user-menu';
 
   //Menu Principal
   const menuPrincipal = (
     <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-      {navItems &&
-        navItems.map((item, index) => {
-          return (
-            <Button key={index} component={Link} to={item.link} color="secondary">
-              <Typography textAlign="center">{item.name}</Typography>
-            </Button>
-          );
-        })}
+      {navItems.map((item, index) => (
+        <Button key={index} component={Link} to={item.link} color="secondary">
+          <Typography textAlign="center">{item.name}</Typography>
+        </Button>
+      ))}
+      {/* Menu desplegable de mantenimientos */}
+      <Button
+        color="secondary"
+        aria-controls={menuIdMant}
+        aria-haspopup="true"
+        endIcon={<ArrowDropDownIcon />}
+        onClick={handleOpenMantMenu}
+      >
+        <Typography textAlign="center">Mantenimiento</Typography>
+      </Button>
+      <Menu
+        id={menuIdMant}
+        anchorEl={anchorElMant}
+        open={Boolean(anchorElMant)}
+        onClose={handleCloseMantMenu}
+      >
+        {mantItems.map((item, index) => (
+          <MenuItem key={index} component={Link} to={item.link} onClick={handleCloseMantMenu}>
+            <Typography sx={{ textAlign: 'center' }}>{item.name}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
     </Box>
   );
 
-  //Menu Principal responsivo
-  const menuPrincipalMobile = navItems.map((page, index) => (
-    <MenuItem key={index} component={Link} to={page.link} onClick={handleClosePrincipalMenu}>
-      <Typography sx={{ textAlign: 'center' }}>{page.name}</Typography>
-    </MenuItem>
-  ));
-
-  //Identificador menu usuario
-  const userMenuId = 'user-menu';
+  //Menu Principal responsivo (incluye los mantenimientos)
+  const menuPrincipalMobile = [
+    ...navItems.map((page, index) => (
+      <MenuItem key={`nav-${index}`} component={Link} to={page.link} onClick={handleClosePrincipalMenu}>
+        <Typography sx={{ textAlign: 'center' }}>{page.name}</Typography>
+      </MenuItem>
+    )),
+    ...mantItems.map((page, index) => (
+      <MenuItem key={`mant-${index}`} component={Link} to={page.link} onClick={handleClosePrincipalMenu}>
+        <Typography sx={{ textAlign: 'center' }}>Mantenimiento {page.name}</Typography>
+      </MenuItem>
+    )),
+  ];
 
   //Menu Usuario
   const userMenu = (
@@ -103,24 +142,18 @@ export default function Header() {
         open={Boolean(anchorElUser)}
         onClose={handleUserMenuClose}
       >
-        {userItems.map((setting, index) => {
-          return (
-            <MenuItem key={index} component={Link} to={setting.link} onClick={handleUserMenuClose}>
-              <Typography sx={{ textAlign: 'center' }}>{setting.name}</Typography>
-            </MenuItem>
-          );
-        })}
+        {userItems.map((setting, index) => (
+          <MenuItem key={index} component={Link} to={setting.link} onClick={handleUserMenuClose}>
+            <Typography sx={{ textAlign: 'center' }}>{setting.name}</Typography>
+          </MenuItem>
+        ))}
       </Menu>
     </Box>
   );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        position="static"
-        color="primaryLight"
-        sx={{ backgroundColor: 'primaryLight.main' }}
-      >
+      <AppBar position="static" color="primaryLight" sx={{ backgroundColor: 'primaryLight.main' }}>
         <Toolbar>
           {/* Botón del menú principal (solo en pantallas pequeñas) */}
           <IconButton
@@ -158,7 +191,6 @@ export default function Header() {
               <SportsGymnasticsIcon />
             </IconButton>
           </Tooltip>
-          {/* Enlace página inicio */}
           {menuPrincipal}
           <Box sx={{ flexGrow: 1 }} />
           <div>{userMenu}</div>
