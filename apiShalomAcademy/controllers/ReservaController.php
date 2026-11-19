@@ -3,7 +3,7 @@
 class reserva
 {
     //Encargado que usa el sistema. 
-    private $idEncargado = 4;
+    private $idEncargado = 2;
 
     //GET Obtener el historial de reservas de la sucursal del encargado
     public function index()
