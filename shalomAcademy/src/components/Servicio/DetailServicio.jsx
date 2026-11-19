@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Container from '@mui/material/Container';
@@ -31,6 +32,7 @@ function Dato({ etiqueta, children }) {
 
 //Componente para mostrar el detalle de un servicio
 export function DetailServicio() {
+  const { t } = useTranslation();
   const routeParams = useParams(); //Obtener los parámetros de la ruta, en este caso el id del servicio
   const navigate = useNavigate(); //Función para volver a la página anterior
   //Url para acceder a las imágenes guardadas en el API
@@ -57,8 +59,8 @@ export function DetailServicio() {
       });
   }, [routeParams.id]); //El efecto se ejecuta cada vez que el id del servicio en los parámetros de la ruta cambia
 
-  if (!loaded) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!loaded) return <p>{t('common:loading')}</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   return (
     <Container component="main" sx={{ mt: 4, mb: 2 }}>
@@ -78,14 +80,14 @@ export function DetailServicio() {
             )}
             <Grid size={{ xs: 12, md: data.imagen_url ? 7 : 12 }}>
               <Typography variant="h4" component="h1" gutterBottom>
-                Detalle del servicio
+                {t('servicio:detail.title')}
               </Typography>
-              <Dato etiqueta="Nombre">{data.nombre}</Dato>
-              <Dato etiqueta="Descripción">{data.descripcion}</Dato>
-              <Dato etiqueta="Tarifa">{formatMoneda(data.tarifa)}</Dato>
-              <Dato etiqueta="Duración">{formatDuracion(data.tiempo_servicio)}</Dato>
-              <Dato etiqueta="Modalidad">{data.modalidad}</Dato>
-              <Dato etiqueta="Edad recomendada">{data.edad_recomendada}</Dato>
+              <Dato etiqueta={t('common:name')}>{data.nombre}</Dato>
+              <Dato etiqueta={t('common:description')}>{data.descripcion}</Dato>
+              <Dato etiqueta={t('servicio:detail.rate')}>{formatMoneda(data.tarifa)}</Dato>
+              <Dato etiqueta={t('servicio:detail.duration')}>{formatDuracion(data.tiempo_servicio)}</Dato>
+              <Dato etiqueta={t('servicio:detail.modality')}>{t(`servicio:modalidad.${data.modalidad}`, { defaultValue: data.modalidad })}</Dato>
+              <Dato etiqueta={t('servicio:detail.age')}>{data.edad_recomendada}</Dato>
             </Grid>
           </Grid>
         </Paper>
@@ -97,7 +99,7 @@ export function DetailServicio() {
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate(-1)}
         >
-          Regresar
+          {t('common:back')}
         </Button>
       </Box>
     </Container>

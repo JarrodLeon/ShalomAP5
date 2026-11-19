@@ -1,0 +1,41 @@
+{
+  "catalog": {
+    "title": "Our products"
+  },
+  "detail": {
+    "description": "Description",
+    "stock": "Available stock",
+    "stockUnits_one": "{{count}} unit",
+    "stockUnits_other": "{{count}} units",
+    "customizable": "Customizable",
+    "customizableYes": "Yes, you can choose size, color, sleeves and appliqués"
+  },
+  "table": {
+    "title": "Products Maintenance",
+    "create": "Create product",
+    "category": "Category",
+    "price": "Price",
+    "stock": "Stock",
+    "customizable": "Customizable",
+    "empty": "There are no registered products."
+  },
+  "form": {
+    "createTitle": "Create Product",
+    "editTitle": "Edit Product",
+    "category": "Category",
+    "price": "Price (₡)",
+    "stock": "Available stock",
+    "customizable": "Customizable product",
+    "created": "Product created #{{id}} - {{name}}",
+    "modified": "Product updated #{{id}} - {{name}}",
+    "imageUploadError": "Product saved, but the image could not be uploaded: {{message}}",
+    "notFound": "Product not found"
+  },
+  "categorias": {
+    "Leotardos": "Leotards",
+    "Accesorios": "Accessories",
+    "Equipo de gimnasia": "Gymnastics equipment",
+    "Ropa deportiva": "Sportswear",
+    "Calzado": "Footwear"
+  }
+}

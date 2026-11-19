@@ -1,0 +1,41 @@
+{
+  "catalog": {
+    "title": "Nuestros productos"
+  },
+  "detail": {
+    "description": "Descripción",
+    "stock": "Stock disponible",
+    "stockUnits_one": "{{count}} unidad",
+    "stockUnits_other": "{{count}} unidades",
+    "customizable": "Personalizable",
+    "customizableYes": "Sí, puede elegir talla, color, mangas y aplicaciones"
+  },
+  "table": {
+    "title": "Mantenimiento Productos",
+    "create": "Crear producto",
+    "category": "Categoría",
+    "price": "Precio",
+    "stock": "Stock",
+    "customizable": "Personalizable",
+    "empty": "No hay productos registrados."
+  },
+  "form": {
+    "createTitle": "Crear Producto",
+    "editTitle": "Modificar Producto",
+    "category": "Categoría",
+    "price": "Precio (₡)",
+    "stock": "Stock disponible",
+    "customizable": "Producto personalizable",
+    "created": "Producto creado #{{id}} - {{name}}",
+    "modified": "Producto modificado #{{id}} - {{name}}",
+    "imageUploadError": "Producto guardado, pero la imagen no se pudo subir: {{message}}",
+    "notFound": "Producto no encontrado"
+  },
+  "categorias": {
+    "Leotardos": "Leotardos",
+    "Accesorios": "Accesorios",
+    "Equipo de gimnasia": "Equipo de gimnasia",
+    "Ropa deportiva": "Ropa deportiva",
+    "Calzado": "Calzado"
+  }
+}

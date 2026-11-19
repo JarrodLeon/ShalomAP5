@@ -1,0 +1,49 @@
+{
+  "catalog": {
+    "title": "Nuestros servicios",
+    "noResults": "No se encontraron servicios con ese nombre."
+  },
+  "card": {
+    "age": "Edad"
+  },
+  "detail": {
+    "title": "Detalle del servicio",
+    "rate": "Tarifa",
+    "duration": "Duración",
+    "modality": "Modalidad",
+    "age": "Edad recomendada"
+  },
+  "table": {
+    "title": "Mantenimiento Servicios",
+    "create": "Crear servicio",
+    "age": "Edad recomendada",
+    "modality": "Modalidad",
+    "duration": "Duración",
+    "rate": "Tarifa"
+  },
+  "form": {
+    "createTitle": "Crear Servicio",
+    "editTitle": "Modificar Servicio",
+    "rate": "Tarifa (₡)",
+    "time": "Tiempo de servicio",
+    "unit": "Unidad",
+    "minutes": "Minutos",
+    "hours": "Horas",
+    "modality": "Modalidad",
+    "age": "Edad recomendada",
+    "created": "Servicio creado #{{id}} - {{name}}",
+    "modified": "Servicio modificado #{{id}} - {{name}}",
+    "imageUploadError": "Servicio guardado, pero la imagen no se pudo subir: {{message}}",
+    "notFound": "Servicio no encontrado"
+  },
+  "modalidad": {
+    "Individual": "Individual",
+    "Grupal": "Grupal"
+  },
+  "duracion": {
+    "min": "{{count}} min",
+    "hour_one": "{{count}} hora",
+    "hour_other": "{{count}} horas",
+    "hoursMinutes": "{{hours}} h {{minutes}} min"
+  }
+}

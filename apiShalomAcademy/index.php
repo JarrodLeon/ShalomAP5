@@ -26,6 +26,7 @@ require_once "models/UsuarioModel.php";
 require_once "models/SucursalModel.php";
 require_once "models/HorarioModel.php";
 require_once "models/ImagenModel.php";
+require_once "models/MensajesModel.php";
 
 
 /***--- Agregar todos los controladores*/

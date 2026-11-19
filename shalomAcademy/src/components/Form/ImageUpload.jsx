@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
@@ -14,6 +15,7 @@ ImageUpload.propTypes = {
 
 //Entrada para insertar o modificar una imagen, con vista previa
 export function ImageUpload({ file, onChange, currentImage, error }) {
+  const { t } = useTranslation();
   //Url para acceder a las imágenes guardadas en el API
   const BASE_URL = import.meta.env.VITE_BASE_URL + 'uploads';
 
@@ -30,7 +32,7 @@ export function ImageUpload({ file, onChange, currentImage, error }) {
   return (
     <Box>
       <Button variant="outlined" component="label">
-        {currentImage || file ? 'Cambiar imagen' : 'Seleccionar imagen'}
+        {currentImage || file ? t('common:imageUpload.change') : t('common:imageUpload.select')}
         <input
           hidden
           type="file"
@@ -43,12 +45,12 @@ export function ImageUpload({ file, onChange, currentImage, error }) {
           {file.name}
         </Typography>
       )}
-      <FormHelperText sx={{ color: '#d32f2f' }}>{error ? error : ' '}</FormHelperText>
+      <FormHelperText sx={{ color: '#d32f2f' }}>{error ? t(error) : ' '}</FormHelperText>
       {src && (
         <Box
           component="img"
           src={src}
-          alt="Vista previa de la imagen"
+          alt={t('common:imageUpload.previewAlt')}
           sx={{ mt: 1, maxWidth: 300, width: '100%', borderRadius: 2 }}
         />
       )}

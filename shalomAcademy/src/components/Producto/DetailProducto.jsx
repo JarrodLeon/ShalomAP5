@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -12,6 +13,7 @@ import { esVerdadero, formatMoneda } from '../../utils/formatters';
 
 //Componente para mostrar el detalle de un producto
 export function DetailProducto() {
+  const { t } = useTranslation();
   const routeParams = useParams(); //Obtener los parámetros de la ruta, en este caso el id del producto
   const navigate = useNavigate(); //Función para volver a la página anterior
   //Url para acceder a las imágenes guardadas en el API
@@ -38,8 +40,8 @@ export function DetailProducto() {
       });
   }, [routeParams.id]); //El efecto se ejecuta cada vez que el id del producto en los parámetros de la ruta cambia
 
-  if (!loaded) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!loaded) return <p>{t('common:loading')}</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   return (
     <Container component="main" sx={{ mt: 4, mb: 2 }}>
@@ -57,29 +59,29 @@ export function DetailProducto() {
             <Typography variant="h4" component="h1" gutterBottom>
               {data.nombre}
             </Typography>
-            <Chip label={data.nombre_categoria} color="secondary" sx={{ mb: 2 }} />
+            <Chip label={t(`producto:categorias.${data.nombre_categoria}`, { defaultValue: data.nombre_categoria })} color="secondary" sx={{ mb: 2 }} />
             <Typography variant="h5" color="primary" gutterBottom>
               {formatMoneda(data.precio)}
             </Typography>
             <Typography component="span" variant="subtitle1" display="block" gutterBottom>
               <Box fontWeight="bold" display="inline">
-                Descripción:
+                {t('producto:detail.description') + ':'}
               </Box>{' '}
               {data.descripcion}
             </Typography>
             <Typography component="span" variant="subtitle1" display="block" gutterBottom>
               <Box fontWeight="bold" display="inline">
-                Stock disponible:
+                {t('producto:detail.stock') + ':'}
               </Box>{' '}
-              {data.stock_disponible} unidades
+              {t('producto:detail.stockUnits', { count: Number(data.stock_disponible) })}
             </Typography>
             <Typography component="span" variant="subtitle1" display="block">
               <Box fontWeight="bold" display="inline">
-                Personalizable:
+                {t('producto:detail.customizable')}:
               </Box>{' '}
               {esVerdadero(data.es_personalizable)
-                ? 'Sí, puede elegir talla, color, mangas y aplicaciones'
-                : 'No'}
+                ? t('producto:detail.customizableYes')
+                : t('common:no')}
             </Typography>
           </Grid>
         </Grid>
@@ -91,7 +93,7 @@ export function DetailProducto() {
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate(-1)}
         >
-          Regresar
+          {t('common:back')}
         </Button>
       </Box>
     </Container>

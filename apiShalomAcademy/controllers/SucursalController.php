@@ -66,6 +66,6 @@ class sucursal
     private function validacion($e)
     {
         http_response_code(400);
-        echo json_encode(array('status' => 400, 'result' => $e->getMessage()), JSON_UNESCAPED_UNICODE);
+        echo json_encode(array('status' => 400, 'result' => MensajesModel::traducir($e->getMessage())), JSON_UNESCAPED_UNICODE);
     }
 }

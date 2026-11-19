@@ -61,10 +61,11 @@ class SucursalModel
      */
     private function validar($objeto, $idSucursal)
     {
-        foreach (array('nombre' => 'El nombre', 'descripcion' => 'La descripción', 'telefono' => 'El teléfono',
-                       'direccion_exacta' => 'La dirección exacta', 'correo_electronico' => 'El correo electrónico') as $campo => $texto) {
+        foreach (array('nombre' => 'El nombre es requerido', 'descripcion' => 'La descripción es requerida',
+                       'telefono' => 'El teléfono es requerido', 'direccion_exacta' => 'La dirección exacta es requerida',
+                       'correo_electronico' => 'El correo electrónico es requerido') as $campo => $mensaje) {
             if (!isset($objeto->$campo) || trim($objeto->$campo) === '') {
-                throw new InvalidArgumentException($texto . ' es requerido');
+                throw new InvalidArgumentException($mensaje);
             }
         }
         if (!filter_var($objeto->correo_electronico, FILTER_VALIDATE_EMAIL)) {

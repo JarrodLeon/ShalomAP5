@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -21,15 +22,16 @@ import { SortableTableHead } from '../Layout/SortableTableHead';
 
 //Encabezados de la tabla (máximo 4 campos + el enlace al detalle)
 const headCells = [
-  { id: 'id_factura', numeric: false, label: 'N° factura' },
-  { id: 'fecha_emision', numeric: false, label: 'Fecha' },
-  { id: 'cliente', numeric: false, label: 'Cliente' },
-  { id: 'total', numeric: true, label: 'Total' },
-  { id: 'detail', numeric: false, label: 'Detalle', sortable: false },
+  { id: 'id_factura', numeric: false, label: 'factura:table.number' },
+  { id: 'fecha_emision', numeric: false, label: 'factura:table.date' },
+  { id: 'cliente', numeric: false, label: 'factura:table.client' },
+  { id: 'total', numeric: true, label: 'factura:table.total' },
+  { id: 'detail', numeric: false, label: 'common:detail', sortable: false },
 ];
 
 //Historial de facturación del encargado
 export default function TableFacturas() {
+  const { t } = useTranslation();
   const [data, setData] = useState([]); //Resultado de consumo del API, respuesta
   const [error, setError] = useState(''); //Error del API
   const [loaded, setLoaded] = useState(false); //Booleano para establecer sí se ha recibido respuesta
@@ -68,8 +70,8 @@ export default function TableFacturas() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
-  if (!loaded) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!loaded) return <p>{t('common:loading')}</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   return (
     <>
@@ -78,7 +80,7 @@ export default function TableFacturas() {
           <Paper sx={{ width: '100%', mb: 2 }}>
             <Toolbar>
               <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
-                Historial de Facturación
+                {t('factura:table.title')}
               </Typography>
             </Toolbar>
             <TableContainer>
@@ -99,7 +101,7 @@ export default function TableFacturas() {
                         <TableCell>{row.cliente}</TableCell>
                         <TableCell align="right">{formatMoneda(row.total)}</TableCell>
                         <TableCell>
-                          <Tooltip title="Ver factura">
+                          <Tooltip title={t('factura:table.viewInvoice')}>
                             <IconButton component={Link} to={`/factura/${row.id_factura}`} color="primary">
                               <VisibilityIcon />
                             </IconButton>
@@ -124,8 +126,8 @@ export default function TableFacturas() {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              labelRowsPerPage="Filas por página"
-              labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+              labelRowsPerPage={t('common:table.rowsPerPage')}
+              labelDisplayedRows={({ from, to, count }) => t('common:table.displayedRows', { from, to, count })}
             />
           </Paper>
         </Box>

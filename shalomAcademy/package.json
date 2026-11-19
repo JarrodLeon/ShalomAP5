@@ -21,6 +21,8 @@
     "@mui/material": "^9.4.0",
     "@mui/styled-engine-sc": "^9.4.0",
     "axios": "^1.20.0",
+    "i18next": "^27.2.1",
+    "i18next-browser-languagedetector": "^8.3.1",
     "jwt-decode": "^4.0.0",
     "nodemon": "^1.14.10",
     "prop-types": "^15.8.1",
@@ -28,6 +30,7 @@
     "react-dom": "^19.2.8",
     "react-hook-form": "^7.89.0",
     "react-hot-toast": "^2.6.1",
+    "react-i18next": "^18.0.2",
     "styled-components": "^6.5.3",
     "yup": "^1.7.1"
   },

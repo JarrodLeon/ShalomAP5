@@ -1,3 +1,5 @@
+import i18n from '../../i18n';
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -25,11 +27,13 @@ import {
 
 //Texto con las opciones elegidas en un producto personalizado
 function personalizacion(linea) {
+  //Los valores (colores, mangas, aplicaciones) vienen de la BD en español: se traducen si existe la clave
+  const valor = (v) => v && i18n.t(`factura:personalizacion.${v}`, { defaultValue: v });
   return [
-    linea.talla && `Talla ${linea.talla}`,
-    linea.color_base,
-    linea.diseno_mangas,
-    linea.aplicaciones,
+    linea.talla && i18n.t('factura:detail.size', { size: linea.talla }),
+    valor(linea.color_base),
+    valor(linea.diseno_mangas),
+    valor(linea.aplicaciones),
   ]
     .filter(Boolean)
     .join(' · ');
@@ -37,6 +41,7 @@ function personalizacion(linea) {
 
 //Componente para mostrar el detalle de una factura (formato de factura)
 export function DetailFactura() {
+  const { t } = useTranslation();
   const routeParams = useParams(); //Obtener el id de la factura desde la ruta
   const navigate = useNavigate(); //Función para volver a la página anterior
 
@@ -58,8 +63,8 @@ export function DetailFactura() {
       });
   }, [routeParams.id]);
 
-  if (!loaded) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!loaded) return <p>{t('common:loading')}</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   return (
     <Container component="main" sx={{ mt: 4, mb: 2 }}>
@@ -71,50 +76,50 @@ export function DetailFactura() {
               <Typography variant="h5" color="primary" gutterBottom>
                 {data.sucursal_nombre}
               </Typography>
-              <Typography variant="body2">Tel: {data.sucursal_telefono}</Typography>
+              <Typography variant="body2">{t('factura:detail.phone', { phone: data.sucursal_telefono })}</Typography>
               <Typography variant="body2">{data.sucursal_direccion}</Typography>
               <Typography variant="body2">{data.sucursal_correo}</Typography>
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }} sx={{ textAlign: { sm: 'right' } }}>
               <Typography variant="h5" component="h1">
-                Factura N° {numeroFactura(data.id_factura)}
+                {t('factura:detail.title', { number: numeroFactura(data.id_factura) })}
               </Typography>
               <Typography variant="body2" gutterBottom>
-                Fecha: {formatFechaHora(data.fecha_emision)}
+                {t('factura:detail.date', { date: formatFechaHora(data.fecha_emision) })}
               </Typography>
-              <Chip label={data.estado_factura} size="small" color="secondary" />
+              <Chip label={t(`factura:estados.${data.estado_factura}`, { defaultValue: data.estado_factura })} size="small" color="secondary" />
             </Grid>
           </Grid>
 
           <Divider sx={{ my: 2 }} />
 
           <Typography variant="subtitle2" color="text.secondary">
-            Cliente
+            {t('factura:detail.client')}
           </Typography>
-          <Typography>Identificación: {data.cliente_identificacion}</Typography>
-          <Typography>Nombre: {data.cliente_nombre}</Typography>
+          <Typography>{t('factura:detail.identification', { id: data.cliente_identificacion })}</Typography>
+          <Typography>{t('factura:detail.clientName', { name: data.cliente_nombre })}</Typography>
 
           {/* ---------- Sector detalle: servicios y/o productos ---------- */}
           <TableContainer sx={{ mt: 3 }}>
             <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell>Tipo</TableCell>
-                  <TableCell>Descripción</TableCell>
-                  <TableCell align="right">Cantidad</TableCell>
-                  <TableCell align="right">Precio</TableCell>
-                  <TableCell align="right">Subtotal</TableCell>
+                  <TableCell>{t('factura:detail.type')}</TableCell>
+                  <TableCell>{t('factura:detail.description')}</TableCell>
+                  <TableCell align="right">{t('factura:detail.quantity')}</TableCell>
+                  <TableCell align="right">{t('factura:detail.price')}</TableCell>
+                  <TableCell align="right">{t('factura:detail.subtotal')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {data.lineas.map((linea, indice) => (
                   <TableRow key={indice}>
-                    <TableCell>{linea.tipo}</TableCell>
+                    <TableCell>{t(`factura:tipo.${linea.tipo}`, { defaultValue: linea.tipo })}</TableCell>
                     <TableCell>
                       {linea.descripcion}
                       {linea.fecha_cita && (
                         <Typography variant="caption" display="block" color="text.secondary">
-                          Cita del {formatFecha(linea.fecha_cita)}
+                          {t('factura:detail.appointmentOf', { date: formatFecha(linea.fecha_cita) })}
                         </Typography>
                       )}
                       {personalizacion(linea) && (
@@ -136,13 +141,13 @@ export function DetailFactura() {
           <Box sx={{ mt: 3, ml: 'auto', maxWidth: 320 }}>
             <Grid container spacing={1}>
               <Grid size={6}>
-                <Typography>Subtotal</Typography>
+                <Typography>{t('factura:detail.subtotal')}</Typography>
               </Grid>
               <Grid size={6} sx={{ textAlign: 'right' }}>
                 <Typography>{formatMoneda(data.subtotal)}</Typography>
               </Grid>
               <Grid size={6}>
-                <Typography>IVA ({Number(data.porcentaje_impuesto)}%)</Typography>
+                <Typography>{t('factura:detail.tax', { percent: Number(data.porcentaje_impuesto) })}</Typography>
               </Grid>
               <Grid size={6} sx={{ textAlign: 'right' }}>
                 <Typography>{formatMoneda(data.impuesto)}</Typography>
@@ -151,7 +156,7 @@ export function DetailFactura() {
                 <Divider />
               </Grid>
               <Grid size={6}>
-                <Typography variant="h6">Total a pagar</Typography>
+                <Typography variant="h6">{t('factura:detail.totalDue')}</Typography>
               </Grid>
               <Grid size={6} sx={{ textAlign: 'right' }}>
                 <Typography variant="h6" color="primary">
@@ -169,7 +174,7 @@ export function DetailFactura() {
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate(-1)}
         >
-          Regresar
+          {t('common:back')}
         </Button>
       </Box>
     </Container>

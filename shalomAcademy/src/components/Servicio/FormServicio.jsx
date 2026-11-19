@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
@@ -23,26 +24,27 @@ import { mensajeError } from '../../utils/apiError';
 const servicioSchema = yup.object({
   nombre: yup
     .string()
-    .required('El nombre es requerido')
-    .min(2, 'El nombre debe tener al menos 2 caracteres'),
-  descripcion: yup.string().required('La descripción es requerida'),
+    .required('validation:nombreRequerido')
+    .min(2, 'validation:nombreMin'),
+  descripcion: yup.string().required('validation:descripcionRequerida'),
   tarifa: yup
     .number()
-    .typeError('Solo acepta números')
-    .required('La tarifa es requerida')
-    .min(0, 'La tarifa no puede ser negativa'),
+    .typeError('validation:soloNumeros')
+    .required('validation:tarifaRequerida')
+    .min(0, 'validation:tarifaMin'),
   tiempo: yup
     .number()
-    .typeError('Solo acepta números')
-    .required('El tiempo es requerido')
-    .positive('El tiempo debe ser mayor a cero'),
-  unidad: yup.string().oneOf(['minutos', 'horas']).required('Seleccione la unidad'),
-  modalidad: yup.string().required('La modalidad es requerida'),
-  edad_recomendada: yup.string().required('La edad recomendada es requerida'),
+    .typeError('validation:soloNumeros')
+    .required('validation:tiempoRequerido')
+    .positive('validation:tiempoPositivo'),
+  unidad: yup.string().oneOf(['minutos', 'horas']).required('validation:unidadSeleccione'),
+  modalidad: yup.string().required('validation:modalidadRequerida'),
+  edad_recomendada: yup.string().required('validation:edadRequerida'),
 });
 
 //Formulario para crear y modificar un servicio (si la ruta trae un id, modifica)
 export function FormServicio() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams(); //Id del servicio a modificar (no existe al crear)
   const esEdicion = Boolean(id);
@@ -103,7 +105,7 @@ export function FormServicio() {
 
   //Validación de la imagen: es requerida al crear
   const validarImagenFormulario = () => {
-    const mensaje = !esEdicion && !imagen ? 'La imagen es requerida' : validarImagen(imagen);
+    const mensaje = !esEdicion && !imagen ? 'validation:imagenRequerida' : validarImagen(imagen);
     setImagenError(mensaje);
     return mensaje === '';
   };
@@ -146,14 +148,14 @@ export function FormServicio() {
               await ImageService.createImage(formData);
             } catch (errorImagen) {
               toast.error(
-                `Servicio guardado, pero la imagen no se pudo subir: ${mensajeError(errorImagen)}`,
+                t('servicio:form.imageUploadError', { message: mensajeError(errorImagen) }),
                 { duration: 6000, position: 'top-center' },
               );
               return navigate('/mantenimiento-servicios');
             }
           }
           toast.success(
-            `Servicio ${esEdicion ? 'modificado' : 'creado'} #${guardado.id_servicio} - ${guardado.nombre}`,
+            t(esEdicion ? 'servicio:form.modified' : 'servicio:form.created', { id: guardado.id_servicio, name: guardado.nombre }),
             { duration: 4000, position: 'top-center' },
           );
           return navigate('/mantenimiento-servicios');
@@ -165,15 +167,15 @@ export function FormServicio() {
       });
   };
 
-  if (error) return <p>Error: {error.message}</p>;
-  if (noEncontrado) return <p>Servicio no encontrado</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
+  if (noEncontrado) return <p>{t('servicio:form.notFound')}</p>;
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
       <Grid container spacing={2} sx={{ p: 2 }}>
         <Grid size={12}>
           <Typography variant="h5" gutterBottom>
-            {esEdicion ? 'Modificar Servicio' : 'Crear Servicio'}
+            {esEdicion ? t('servicio:form.editTitle') : t('servicio:form.createTitle')}
           </Typography>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
@@ -184,10 +186,10 @@ export function FormServicio() {
               <TextField
                 {...field}
                 id="nombre"
-                label="Nombre"
+                label={t('common:name')}
                 fullWidth
                 error={Boolean(errors.nombre)}
-                helperText={errors.nombre ? errors.nombre.message : ' '}
+                helperText={errors.nombre ? t(errors.nombre.message) : ' '}
               />
             )}
           />
@@ -200,12 +202,12 @@ export function FormServicio() {
               <TextField
                 {...field}
                 id="tarifa"
-                label="Tarifa (₡)"
+                label={t('servicio:form.rate')}
                 type="number"
                 fullWidth
                 slotProps={{ htmlInput: { min: 0, step: '0.01' } }}
                 error={Boolean(errors.tarifa)}
-                helperText={errors.tarifa ? errors.tarifa.message : ' '}
+                helperText={errors.tarifa ? t(errors.tarifa.message) : ' '}
               />
             )}
           />
@@ -218,12 +220,12 @@ export function FormServicio() {
               <TextField
                 {...field}
                 id="descripcion"
-                label="Descripción"
+                label={t('common:description')}
                 fullWidth
                 multiline
                 minRows={3}
                 error={Boolean(errors.descripcion)}
-                helperText={errors.descripcion ? errors.descripcion.message : ' '}
+                helperText={errors.descripcion ? t(errors.descripcion.message) : ' '}
               />
             )}
           />
@@ -237,50 +239,50 @@ export function FormServicio() {
               <TextField
                 {...field}
                 id="tiempo"
-                label="Tiempo de servicio"
+                label={t('servicio:form.time')}
                 type="number"
                 fullWidth
                 slotProps={{ htmlInput: { min: 0, step: '0.25' } }}
                 error={Boolean(errors.tiempo)}
-                helperText={errors.tiempo ? errors.tiempo.message : ' '}
+                helperText={errors.tiempo ? t(errors.tiempo.message) : ' '}
               />
             )}
           />
         </Grid>
         <Grid size={{ xs: 4, sm: 3 }}>
           <FormControl fullWidth error={Boolean(errors.unidad)}>
-            <InputLabel id="unidad-label">Unidad</InputLabel>
+            <InputLabel id="unidad-label">{t('servicio:form.unit')}</InputLabel>
             <Controller
               name="unidad"
               control={control}
               render={({ field }) => (
-                <Select {...field} labelId="unidad-label" label="Unidad" value={field.value}>
-                  <MenuItem value="minutos">Minutos</MenuItem>
-                  <MenuItem value="horas">Horas</MenuItem>
+                <Select {...field} labelId="unidad-label" label={t('servicio:form.unit')} value={field.value}>
+                  <MenuItem value="minutos">{t('servicio:form.minutes')}</MenuItem>
+                  <MenuItem value="horas">{t('servicio:form.hours')}</MenuItem>
                 </Select>
               )}
             />
             <FormHelperText sx={{ color: '#d32f2f' }}>
-              {errors.unidad ? errors.unidad.message : ' '}
+              {errors.unidad ? t(errors.unidad.message) : ' '}
             </FormHelperText>
           </FormControl>
         </Grid>
         <Grid size={{ xs: 12, sm: 3 }}>
           {/* Campo adicional 1: modalidad */}
           <FormControl fullWidth error={Boolean(errors.modalidad)}>
-            <InputLabel id="modalidad-label">Modalidad</InputLabel>
+            <InputLabel id="modalidad-label">{t('servicio:form.modality')}</InputLabel>
             <Controller
               name="modalidad"
               control={control}
               render={({ field }) => (
-                <Select {...field} labelId="modalidad-label" label="Modalidad" value={field.value}>
-                  <MenuItem value="Individual">Individual</MenuItem>
-                  <MenuItem value="Grupal">Grupal</MenuItem>
+                <Select {...field} labelId="modalidad-label" label={t('servicio:form.modality')} value={field.value}>
+                  <MenuItem value="Individual">{t('servicio:modalidad.Individual')}</MenuItem>
+                  <MenuItem value="Grupal">{t('servicio:modalidad.Grupal')}</MenuItem>
                 </Select>
               )}
             />
             <FormHelperText sx={{ color: '#d32f2f' }}>
-              {errors.modalidad ? errors.modalidad.message : ' '}
+              {errors.modalidad ? t(errors.modalidad.message) : ' '}
             </FormHelperText>
           </FormControl>
         </Grid>
@@ -293,10 +295,10 @@ export function FormServicio() {
               <TextField
                 {...field}
                 id="edad_recomendada"
-                label="Edad recomendada"
+                label={t('servicio:form.age')}
                 fullWidth
                 error={Boolean(errors.edad_recomendada)}
-                helperText={errors.edad_recomendada ? errors.edad_recomendada.message : ' '}
+                helperText={errors.edad_recomendada ? t(errors.edad_recomendada.message) : ' '}
               />
             )}
           />
@@ -312,10 +314,10 @@ export function FormServicio() {
         </Grid>
         <Grid size={12}>
           <Button type="submit" variant="contained" color="secondary" sx={{ m: 1 }}>
-            Guardar
+            {t('common:save')}
           </Button>
           <Button variant="outlined" sx={{ m: 1 }} onClick={() => navigate(-1)}>
-            Cancelar
+            {t('common:cancel')}
           </Button>
         </Grid>
       </Grid>

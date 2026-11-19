@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -27,26 +28,26 @@ const fechaActual = () => new Date().toLocaleDateString('en-CA');
 const horarioSchema = yup.object({
   id_sucursal: yup
     .number()
-    .typeError('Seleccione una sucursal')
-    .required('La sucursal es requerida'),
+    .typeError('validation:sucursalSeleccione')
+    .required('validation:sucursalRequerida'),
   fecha: yup
     .string()
-    .required('La fecha es requerida')
-    .test('fecha-vigente', 'La fecha no puede ser anterior a la fecha actual', (valor) => !valor || valor >= fechaActual()),
+    .required('validation:fechaRequerida')
+    .test('fecha-vigente', 'validation:fechaVigente', (valor) => !valor || valor >= fechaActual()),
   todo_dia: yup.boolean(),
   hora_inicio: yup.string().when('todo_dia', {
     is: true,
     then: (schema) => schema.notRequired(),
-    otherwise: (schema) => schema.required('La hora de inicio es requerida'),
+    otherwise: (schema) => schema.required('validation:horaInicioRequerida'),
   }),
   hora_fin: yup
     .string()
     .when('todo_dia', {
       is: true,
       then: (schema) => schema.notRequired(),
-      otherwise: (schema) => schema.required('La hora final es requerida'),
+      otherwise: (schema) => schema.required('validation:horaFinRequerida'),
     })
-    .test('rango-horas', 'La hora final debe ser mayor que la hora de inicio', function (valor) {
+    .test('rango-horas', 'validation:horaFinMayor', function (valor) {
       const { hora_inicio, todo_dia } = this.parent;
       if (todo_dia || !valor || !hora_inicio) return true;
       return valor > hora_inicio;
@@ -60,9 +61,9 @@ FormHorario.propTypes = {
 
 //Formulario para crear un horario o un bloqueo
 export function FormHorario({ esBloqueo = false }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const tipo = esBloqueo ? 'Bloqueo' : 'Horario';
 
   const {
     control,
@@ -119,7 +120,7 @@ export function FormHorario({ esBloqueo = false }) {
       .then((response) => {
         const creado = response.data;
         if (creado && creado.id_horario) {
-          toast.success(`${tipo} creado #${creado.id_horario} - ${creado.sucursal}`, {
+          toast.success(t(esBloqueo ? 'horario:form.createdBlock' : 'horario:form.createdSchedule', { id: creado.id_horario, branch: creado.sucursal }), {
             duration: 4000,
             position: 'top-center',
           });
@@ -134,26 +135,26 @@ export function FormHorario({ esBloqueo = false }) {
       });
   };
 
-  if (error) return <p>Error: {error.message}</p>;
-  if (!loadedSucursales) return <p>Cargando...</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
+  if (!loadedSucursales) return <p>{t('common:loading')}</p>;
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
       <Grid container spacing={2} sx={{ p: 2 }}>
         <Grid size={12}>
           <Typography variant="h5" gutterBottom>
-            {esBloqueo ? 'Crear Bloqueo' : 'Crear Horario'}
+            {esBloqueo ? t('horario:form.createBlockTitle') : t('horario:form.createScheduleTitle')}
           </Typography>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
           {/* Lista de sucursales */}
           <FormControl fullWidth error={Boolean(errors.id_sucursal)}>
-            <InputLabel id="sucursal-label">Sucursal</InputLabel>
+            <InputLabel id="sucursal-label">{t('horario:form.branch')}</InputLabel>
             <Controller
               name="id_sucursal"
               control={control}
               render={({ field }) => (
-                <Select {...field} labelId="sucursal-label" label="Sucursal" value={field.value}>
+                <Select {...field} labelId="sucursal-label" label={t('horario:form.branch')} value={field.value}>
                   {dataSucursales.map((sucursal) => (
                     <MenuItem key={sucursal.id_sucursal} value={Number(sucursal.id_sucursal)}>
                       {sucursal.nombre}
@@ -163,7 +164,7 @@ export function FormHorario({ esBloqueo = false }) {
               )}
             />
             <FormHelperText sx={{ color: '#d32f2f' }}>
-              {errors.id_sucursal ? errors.id_sucursal.message : ' '}
+              {errors.id_sucursal ? t(errors.id_sucursal.message) : ' '}
             </FormHelperText>
           </FormControl>
         </Grid>
@@ -175,12 +176,12 @@ export function FormHorario({ esBloqueo = false }) {
               <TextField
                 {...field}
                 id="fecha"
-                label="Fecha"
+                label={t('horario:form.date')}
                 type="date"
                 fullWidth
                 slotProps={{ inputLabel: { shrink: true } }}
                 error={Boolean(errors.fecha)}
-                helperText={errors.fecha ? errors.fecha.message : ' '}
+                helperText={errors.fecha ? t(errors.fecha.message) : ' '}
               />
             )}
           />
@@ -194,7 +195,7 @@ export function FormHorario({ esBloqueo = false }) {
               render={({ field }) => (
                 <FormControlLabel
                   control={<Checkbox checked={Boolean(field.value)} onChange={field.onChange} />}
-                  label="Bloquear todo el día"
+                  label={t('horario:form.allDay')}
                 />
               )}
             />
@@ -208,13 +209,13 @@ export function FormHorario({ esBloqueo = false }) {
               <TextField
                 {...field}
                 id="hora_inicio"
-                label={esBloqueo ? 'Hora de inicio del bloqueo' : 'Hora de inicio del servicio'}
+                label={esBloqueo ? t('horario:form.startBlock') : t('horario:form.startService')}
                 type="time"
                 fullWidth
                 disabled={todoDia}
                 slotProps={{ inputLabel: { shrink: true } }}
                 error={Boolean(errors.hora_inicio)}
-                helperText={errors.hora_inicio ? errors.hora_inicio.message : ' '}
+                helperText={errors.hora_inicio ? t(errors.hora_inicio.message) : ' '}
               />
             )}
           />
@@ -227,13 +228,13 @@ export function FormHorario({ esBloqueo = false }) {
               <TextField
                 {...field}
                 id="hora_fin"
-                label={esBloqueo ? 'Hora final del bloqueo' : 'Hora final del servicio'}
+                label={esBloqueo ? t('horario:form.endBlock') : t('horario:form.endService')}
                 type="time"
                 fullWidth
                 disabled={todoDia}
                 slotProps={{ inputLabel: { shrink: true } }}
                 error={Boolean(errors.hora_fin)}
-                helperText={errors.hora_fin ? errors.hora_fin.message : ' '}
+                helperText={errors.hora_fin ? t(errors.hora_fin.message) : ' '}
               />
             )}
           />
@@ -247,10 +248,10 @@ export function FormHorario({ esBloqueo = false }) {
                 <TextField
                   {...field}
                   id="motivo"
-                  label="Motivo del bloqueo (opcional)"
+                  label={t('horario:form.reason')}
                   fullWidth
                   error={Boolean(errors.motivo)}
-                  helperText={errors.motivo ? errors.motivo.message : ' '}
+                  helperText={errors.motivo ? t(errors.motivo.message) : ' '}
                 />
               )}
             />
@@ -258,10 +259,10 @@ export function FormHorario({ esBloqueo = false }) {
         )}
         <Grid size={12}>
           <Button type="submit" variant="contained" color="secondary" sx={{ m: 1 }}>
-            Guardar
+            {t('common:save')}
           </Button>
           <Button variant="outlined" sx={{ m: 1 }} onClick={() => navigate(-1)}>
-            Cancelar
+            {t('common:cancel')}
           </Button>
         </Grid>
       </Grid>

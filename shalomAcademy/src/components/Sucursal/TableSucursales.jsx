@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -23,16 +24,17 @@ import { SortableTableHead } from '../Layout/SortableTableHead';
 
 //Encabezados de la tabla
 const headCells = [
-  { id: 'nombre', numeric: false, label: 'Nombre' },
-  { id: 'telefono', numeric: false, label: 'Teléfono' },
-  { id: 'correo_electronico', numeric: false, label: 'Correo electrónico' },
-  { id: 'direccion_exacta', numeric: false, label: 'Dirección exacta' },
-  { id: 'cantidad_encargados', numeric: true, label: 'Encargados' },
-  { id: 'acciones', numeric: false, label: 'Acciones', sortable: false },
+  { id: 'nombre', numeric: false, label: 'common:name' },
+  { id: 'telefono', numeric: false, label: 'sucursal:table.phone' },
+  { id: 'correo_electronico', numeric: false, label: 'sucursal:table.email' },
+  { id: 'direccion_exacta', numeric: false, label: 'sucursal:table.address' },
+  { id: 'cantidad_encargados', numeric: true, label: 'sucursal:table.managers' },
+  { id: 'acciones', numeric: false, label: 'common:actions', sortable: false },
 ];
 
 //Componente tabla (mantenimiento de sucursales)
 export default function TableSucursales() {
+  const { t } = useTranslation();
   const [data, setData] = useState([]); //Resultado de consumo del API, respuesta
   const [error, setError] = useState(''); //Error del API
   const [loaded, setLoaded] = useState(false); //Booleano para establecer sí se ha recibido respuesta
@@ -71,15 +73,15 @@ export default function TableSucursales() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
-  if (!loaded) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!loaded) return <p>{t('common:loading')}</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <Toolbar sx={{ gap: 2, flexWrap: 'wrap', py: 1 }}>
           <Typography sx={{ flex: '1 1 auto' }} variant="h6" id="tableTitle" component="div">
-            Mantenimiento Sucursales
+            {t('sucursal:table.title')}
           </Typography>
           {/* Crear sucursal */}
           <Button
@@ -89,7 +91,7 @@ export default function TableSucursales() {
             color="secondary"
             startIcon={<AddIcon />}
           >
-            Crear sucursal
+            {t('sucursal:table.create')}
           </Button>
         </Toolbar>
         <TableContainer>
@@ -111,12 +113,12 @@ export default function TableSucursales() {
                     <TableCell>{row.direccion_exacta}</TableCell>
                     <TableCell align="right">{row.cantidad_encargados}</TableCell>
                     <TableCell>
-                      <Tooltip title="Ver detalle">
+                      <Tooltip title={t('common:viewDetail')}>
                         <IconButton component={Link} to={`/sucursal/${row.id_sucursal}`} color="primary">
                           <VisibilityIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Modificar">
+                      <Tooltip title={t('common:modify')}>
                         <IconButton
                           component={Link}
                           to={`/sucursal/editar/${row.id_sucursal}`}
@@ -130,7 +132,7 @@ export default function TableSucursales() {
                 ))}
               {data.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6}>No hay sucursales registradas.</TableCell>
+                  <TableCell colSpan={6}>{t('sucursal:table.empty')}</TableCell>
                 </TableRow>
               )}
               {emptyRows > 0 && (
@@ -150,16 +152,9 @@ export default function TableSucursales() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage="Filas por página"
-          labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
-          getItemAriaLabel={(type) =>
-            ({
-              first: 'Primera página',
-              last: 'Última página',
-              next: 'Página siguiente',
-              previous: 'Página anterior',
-            })[type]
-          }
+          labelRowsPerPage={t('common:table.rowsPerPage')}
+          labelDisplayedRows={({ from, to, count }) => t('common:table.displayedRows', { from, to, count })}
+          getItemAriaLabel={(type) => t(`common:table.${type}`)}
         />
       </Paper>
     </Box>

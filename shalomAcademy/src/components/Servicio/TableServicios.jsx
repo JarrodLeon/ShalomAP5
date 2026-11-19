@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -26,16 +27,17 @@ import { SortableTableHead } from '../Layout/SortableTableHead';
 
 //Encabezados de la tabla
 const headCells = [
-  { id: 'nombre', numeric: false, label: 'Nombre' },
-  { id: 'edad_recomendada', numeric: false, label: 'Edad recomendada' },
-  { id: 'modalidad', numeric: false, label: 'Modalidad' },
-  { id: 'tiempo_servicio', numeric: true, label: 'Duración' },
-  { id: 'tarifa', numeric: true, label: 'Tarifa' },
-  { id: 'detail', numeric: false, label: 'Acciones', sortable: false },
+  { id: 'nombre', numeric: false, label: 'common:name' },
+  { id: 'edad_recomendada', numeric: false, label: 'servicio:table.age' },
+  { id: 'modalidad', numeric: false, label: 'servicio:table.modality' },
+  { id: 'tiempo_servicio', numeric: true, label: 'servicio:table.duration' },
+  { id: 'tarifa', numeric: true, label: 'servicio:table.rate' },
+  { id: 'detail', numeric: false, label: 'common:actions', sortable: false },
 ];
 
 //Componente tabla (mantenimiento de servicios)
 export default function TableServicios() {
+  const { t } = useTranslation();
   //Datos a cargar en la tabla
   const [data, setData] = useState([]); //Resultado de consumo del API, respuesta
   const [error, setError] = useState(''); //Error del API
@@ -90,8 +92,8 @@ export default function TableServicios() {
   //Evita un salto de diseño al llegar a la última página con datos vacíos
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filtrados.length) : 0;
 
-  if (!loaded) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!loaded) return <p>{t('common:loading')}</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   return (
     <>
@@ -100,11 +102,11 @@ export default function TableServicios() {
           <Paper sx={{ width: '100%', mb: 2 }}>
             <Toolbar sx={{ gap: 2, flexWrap: 'wrap', py: 1 }}>
               <Typography sx={{ flex: '1 1 auto' }} variant="h6" id="tableTitle" component="div">
-                Mantenimiento Servicios
+                {t('servicio:table.title')}
               </Typography>
               {/* Filtro por nombre */}
               <TextField
-                label="Buscar por nombre"
+                label={t('common:searchByName')}
                 variant="outlined"
                 size="small"
                 value={filtro}
@@ -118,7 +120,7 @@ export default function TableServicios() {
                 color="secondary"
                 startIcon={<AddIcon />}
               >
-                Crear servicio
+                {t('servicio:table.create')}
               </Button>
             </Toolbar>
             <TableContainer>
@@ -136,11 +138,11 @@ export default function TableServicios() {
                       <TableRow hover key={row.id_servicio}>
                         <TableCell>{row.nombre}</TableCell>
                         <TableCell>{row.edad_recomendada}</TableCell>
-                        <TableCell>{row.modalidad}</TableCell>
+                        <TableCell>{t(`servicio:modalidad.${row.modalidad}`, { defaultValue: row.modalidad })}</TableCell>
                         <TableCell align="right">{formatDuracion(row.tiempo_servicio)}</TableCell>
                         <TableCell align="right">{formatMoneda(row.tarifa)}</TableCell>
                         <TableCell>
-                          <Tooltip title="Ver detalle">
+                          <Tooltip title={t('common:viewDetail')}>
                             <IconButton
                               component={Link}
                               to={`/servicio/${row.id_servicio}`}
@@ -149,7 +151,7 @@ export default function TableServicios() {
                               <VisibilityIcon />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title="Modificar">
+                          <Tooltip title={t('common:modify')}>
                             <IconButton
                               component={Link}
                               to={`/servicio/editar/${row.id_servicio}`}
@@ -163,7 +165,7 @@ export default function TableServicios() {
                     ))}
                   {filtrados.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={6}>No se encontraron servicios con ese nombre.</TableCell>
+                      <TableCell colSpan={6}>{t('servicio:catalog.noResults')}</TableCell>
                     </TableRow>
                   )}
                   {emptyRows > 0 && (
@@ -183,16 +185,9 @@ export default function TableServicios() {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              labelRowsPerPage="Filas por página"
-              labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
-              getItemAriaLabel={(type) =>
-                ({
-                  first: 'Primera página',
-                  last: 'Última página',
-                  next: 'Página siguiente',
-                  previous: 'Página anterior',
-                })[type]
-              }
+              labelRowsPerPage={t('common:table.rowsPerPage')}
+              labelDisplayedRows={({ from, to, count }) => t('common:table.displayedRows', { from, to, count })}
+              getItemAriaLabel={(type) => t(`common:table.${type}`)}
             />
           </Paper>
         </Box>

@@ -1,0 +1,31 @@
+{
+  "table": {
+    "title": "Reservations History",
+    "dateTime": "Date and time",
+    "client": "Client",
+    "service": "Service",
+    "status": "Status"
+  },
+  "detail": {
+    "title": "Reservation No. {{id}}",
+    "generatedOn": "Reservation created on",
+    "appointmentDate": "Appointment date",
+    "time": "Time",
+    "client": "Client",
+    "branch": "Branch",
+    "service": "Service",
+    "questions": "Reservation questions",
+    "q1": "1. Has the client practiced gymnastics before?",
+    "q2": "2. Does the client have any injury or medical condition?",
+    "q3": "3. What is the goal of the class?"
+  },
+  "estados": {
+    "Pendiente": "Pending",
+    "Confirmada": "Confirmed",
+    "Reprogramada": "Rescheduled",
+    "Completada": "Completed",
+    "Cancelada": "Cancelled",
+    "No asistió": "No show",
+    "Vencida": "Expired"
+  }
+}

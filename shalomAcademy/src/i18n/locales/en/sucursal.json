@@ -1,0 +1,31 @@
+{
+  "table": {
+    "title": "Branches Maintenance",
+    "create": "Create branch",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Exact address",
+    "managers": "Managers",
+    "empty": "There are no registered branches."
+  },
+  "detail": {
+    "title": "Branch details",
+    "phone": "Phone",
+    "address": "Exact address",
+    "email": "Email",
+    "managers": "Managers",
+    "noManagers": "This branch has no managers assigned."
+  },
+  "form": {
+    "createTitle": "Create Branch",
+    "editTitle": "Edit Branch",
+    "phone": "Phone number",
+    "address": "Exact address",
+    "email": "Email",
+    "managers": "Managers",
+    "noAvailable": "There are no managers without an assigned branch",
+    "created": "Branch created #{{id}} - {{name}}",
+    "modified": "Branch updated #{{id}} - {{name}}",
+    "notFound": "Branch not found"
+  }
+}

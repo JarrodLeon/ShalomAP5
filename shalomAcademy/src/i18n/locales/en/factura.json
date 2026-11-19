@@ -1,0 +1,49 @@
+{
+  "table": {
+    "title": "Billing History",
+    "number": "Invoice no.",
+    "date": "Date",
+    "client": "Client",
+    "total": "Total",
+    "viewInvoice": "View invoice"
+  },
+  "detail": {
+    "title": "Invoice No. {{number}}",
+    "date": "Date: {{date}}",
+    "phone": "Phone: {{phone}}",
+    "client": "Client",
+    "identification": "ID number: {{id}}",
+    "clientName": "Name: {{name}}",
+    "type": "Type",
+    "description": "Description",
+    "quantity": "Quantity",
+    "price": "Price",
+    "subtotal": "Subtotal",
+    "appointmentOf": "Appointment on {{date}}",
+    "tax": "VAT ({{percent}}%)",
+    "totalDue": "Total due",
+    "size": "Size {{size}}"
+  },
+  "tipo": {
+    "Servicio": "Service",
+    "Producto": "Product"
+  },
+  "estados": {
+    "Proforma": "Proforma",
+    "Completada": "Completed",
+    "Anulada": "Voided"
+  },
+  "personalizacion": {
+    "Rosado": "Pink",
+    "Azul": "Blue",
+    "Negro": "Black",
+    "Morado": "Purple",
+    "Turquesa": "Turquoise",
+    "Sin mangas": "Sleeveless",
+    "Manga corta": "Short sleeve",
+    "Manga larga": "Long sleeve",
+    "Pedrería": "Rhinestones",
+    "Brillo": "Glitter",
+    "Liso": "Plain"
+  }
+}

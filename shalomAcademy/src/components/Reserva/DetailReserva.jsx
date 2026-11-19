@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Container from '@mui/material/Container';
@@ -40,6 +41,7 @@ function Dato({ etiqueta, children }) {
 
 //Componente para mostrar el detalle de una reserva
 export function DetailReserva() {
+  const { t } = useTranslation();
   const routeParams = useParams(); //Obtener el id de la reserva desde la ruta
   const navigate = useNavigate(); //Función para volver a la página anterior
 
@@ -61,8 +63,8 @@ export function DetailReserva() {
       });
   }, [routeParams.id]);
 
-  if (!loaded) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!loaded) return <p>{t('common:loading')}</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   return (
     <Container component="main" sx={{ mt: 4, mb: 2 }}>
@@ -71,7 +73,7 @@ export function DetailReserva() {
           <Grid container spacing={2} alignItems="center" sx={{ mb: 2 }}>
             <Grid size={{ xs: 12, sm: 8 }}>
               <Typography variant="h4" component="h1">
-                Reserva N° {data.id_reserva}
+                {t('reserva:detail.title', { id: data.id_reserva })}
               </Typography>
             </Grid>
             <Grid size={{ xs: 12, sm: 4 }} sx={{ textAlign: { sm: 'right' } }}>
@@ -84,14 +86,14 @@ export function DetailReserva() {
 
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <Dato etiqueta="Reserva generada el">{formatFechaHora(data.fecha_creacion)}</Dato>
-              <Dato etiqueta="Fecha de la cita">{formatFecha(data.fecha_cita)}</Dato>
-              <Dato etiqueta="Hora">{rangoHoras(data.hora_inicio, data.hora_fin)}</Dato>
+              <Dato etiqueta={t('reserva:detail.generatedOn')}>{formatFechaHora(data.fecha_creacion)}</Dato>
+              <Dato etiqueta={t('reserva:detail.appointmentDate')}>{formatFecha(data.fecha_cita)}</Dato>
+              <Dato etiqueta={t('reserva:detail.time')}>{rangoHoras(data.hora_inicio, data.hora_fin)}</Dato>
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <Dato etiqueta="Cliente">{data.cliente}</Dato>
-              <Dato etiqueta="Sucursal">{data.sucursal}</Dato>
-              <Dato etiqueta="Servicio">
+              <Dato etiqueta={t('reserva:detail.client')}>{data.cliente}</Dato>
+              <Dato etiqueta={t('reserva:detail.branch')}>{data.sucursal}</Dato>
+              <Dato etiqueta={t('reserva:detail.service')}>
                 {data.servicio} ({formatMoneda(data.precio_servicio)})
               </Dato>
             </Grid>
@@ -101,13 +103,13 @@ export function DetailReserva() {
 
           {/* Las 3 preguntas de la reserva con sus respuestas (vienen de la BD) */}
           <Typography variant="h6" gutterBottom>
-            Preguntas de la reserva
+            {t('reserva:detail.questions')}
           </Typography>
-          <Dato etiqueta="1. ¿Ha practicado gimnasia antes?">
-            {esVerdadero(data.practica_previa) ? 'Sí' : 'No'}
+          <Dato etiqueta={t('reserva:detail.q1')}>
+            {esVerdadero(data.practica_previa) ? t('common:yes') : t('common:no')}
           </Dato>
-          <Dato etiqueta="2. ¿Tiene alguna lesión o condición médica?">{data.condicion_medica}</Dato>
-          <Dato etiqueta="3. ¿Cuál es el objetivo de la clase?">{data.objetivo}</Dato>
+          <Dato etiqueta={t('reserva:detail.q2')}>{data.condicion_medica}</Dato>
+          <Dato etiqueta={t('reserva:detail.q3')}>{data.objetivo}</Dato>
         </Paper>
       )}
       <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
@@ -117,7 +119,7 @@ export function DetailReserva() {
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate(-1)}
         >
-          Regresar
+          {t('common:back')}
         </Button>
       </Box>
     </Container>

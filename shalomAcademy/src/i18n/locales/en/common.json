@@ -1,0 +1,49 @@
+{
+  "appTitle": "Shalom Academy",
+  "loading": "Loading...",
+  "errorPrefix": "Error: {{message}}",
+  "back": "Back",
+  "save": "Save",
+  "cancel": "Cancel",
+  "viewDetail": "View details",
+  "modify": "Edit",
+  "actions": "Actions",
+  "detail": "Details",
+  "yes": "Yes",
+  "no": "No",
+  "name": "Name",
+  "description": "Description",
+  "searchByName": "Search by name",
+  "table": {
+    "rowsPerPage": "Rows per page",
+    "displayedRows": "{{from}}-{{to}} of {{count}}",
+    "first": "First page",
+    "last": "Last page",
+    "next": "Next page",
+    "previous": "Previous page",
+    "dense": "Dense padding",
+    "sortedAsc": "sorted ascending",
+    "sortedDesc": "sorted descending"
+  },
+  "days": {
+    "Lunes": "Monday",
+    "Martes": "Tuesday",
+    "Miércoles": "Wednesday",
+    "Jueves": "Thursday",
+    "Viernes": "Friday",
+    "Sábado": "Saturday",
+    "Domingo": "Sunday"
+  },
+  "time": {
+    "am": "AM",
+    "pm": "PM"
+  },
+  "apiError": {
+    "generic": "The operation could not be completed"
+  },
+  "imageUpload": {
+    "select": "Select image",
+    "change": "Change image",
+    "previewAlt": "Image preview"
+  }
+}

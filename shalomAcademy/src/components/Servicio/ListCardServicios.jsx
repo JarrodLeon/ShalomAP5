@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -17,6 +18,7 @@ ListCardServicios.propTypes = {
 };
 
 export function ListCardServicios({ data }) {
+  const { t } = useTranslation();
   //Url para acceder a las imágenes guardadas en el API
   const BASE_URL = import.meta.env.VITE_BASE_URL + 'uploads';
 
@@ -49,7 +51,7 @@ export function ListCardServicios({ data }) {
               <CardContent sx={{ flexGrow: 1 }}>
                 {/* Edad recomendada (campo 3) */}
                 <Typography variant="body1" gutterBottom>
-                  <strong>Edad:</strong> {item.edad_recomendada}
+                  <strong>{t('servicio:card.age')}:</strong> {item.edad_recomendada}
                 </Typography>
                 {/* Tarifa (campo 4) */}
                 <Typography variant="h6" align="right" color="primary">
@@ -64,7 +66,7 @@ export function ListCardServicios({ data }) {
                 <IconButton
                   component={Link}
                   to={`/servicio/${item.id_servicio}`}
-                  aria-label="Detalle"
+                  aria-label={t('common:detail')}
                   sx={{ ml: 'auto' }}
                 >
                   <Info />

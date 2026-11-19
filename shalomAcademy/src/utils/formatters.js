@@ -1,17 +1,22 @@
-const MONEDA = new Intl.NumberFormat('es-CR', {
-  style: 'currency',
-  currency: 'CRC',
-});
+import i18n from '../i18n';
+
+//Idioma de formato (fechas y moneda) según el idioma activo de la aplicación
+function locale() {
+  return (i18n.resolvedLanguage || 'es').startsWith('en') ? 'en-US' : 'es-CR';
+}
 
 //Formatea un monto como colones
 export function formatMoneda(valor) {
-  return MONEDA.format(Number(valor));
+  return new Intl.NumberFormat(locale(), {
+    style: 'currency',
+    currency: 'CRC',
+  }).format(Number(valor));
 }
 
 //Recibe 'YYYY-MM-DD' (o 'YYYY-MM-DD HH:MM:SS') y devuelve la fecha legible
 export function formatFecha(texto) {
   const [anio, mes, dia] = texto.slice(0, 10).split('-').map(Number);
-  return new Date(anio, mes - 1, dia).toLocaleDateString('es-CR', {
+  return new Date(anio, mes - 1, dia).toLocaleDateString(locale(), {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
@@ -20,15 +25,18 @@ export function formatFecha(texto) {
 
 //Recibe 'YYYY-MM-DD HH:MM:SS' y devuelve fecha y hora legibles
 export function formatFechaHora(texto) {
-  return new Date(texto.replace(' ', 'T')).toLocaleString('es-CR', {
+  return new Date(texto.replace(' ', 'T')).toLocaleString(locale(), {
     dateStyle: 'long',
     timeStyle: 'short',
   });
 }
 
-//Recibe 'HH:MM:SS' y devuelve 'HH:MM'
+//Recibe 'HH:MM:SS' (24 horas, como lo guarda MySQL) y devuelve formato de 12 horas: '4:00 p. m.' / '4:00 PM'
 export function formatHora(texto) {
-  return texto.slice(0, 5);
+  const [hora, minutos] = texto.split(':').map(Number);
+  const sufijo = hora >= 12 ? i18n.t('common:time.pm') : i18n.t('common:time.am');
+  const hora12 = hora % 12 === 0 ? 12 : hora % 12;
+  return `${hora12}:${String(minutos).padStart(2, '0')} ${sufijo}`;
 }
 
 export function rangoHoras(inicio, fin) {

@@ -1,0 +1,49 @@
+{
+  "table": {
+    "title": "Historial de Facturación",
+    "number": "N° factura",
+    "date": "Fecha",
+    "client": "Cliente",
+    "total": "Total",
+    "viewInvoice": "Ver factura"
+  },
+  "detail": {
+    "title": "Factura N° {{number}}",
+    "date": "Fecha: {{date}}",
+    "phone": "Tel: {{phone}}",
+    "client": "Cliente",
+    "identification": "Identificación: {{id}}",
+    "clientName": "Nombre: {{name}}",
+    "type": "Tipo",
+    "description": "Descripción",
+    "quantity": "Cantidad",
+    "price": "Precio",
+    "subtotal": "Subtotal",
+    "appointmentOf": "Cita del {{date}}",
+    "tax": "IVA ({{percent}}%)",
+    "totalDue": "Total a pagar",
+    "size": "Talla {{size}}"
+  },
+  "tipo": {
+    "Servicio": "Servicio",
+    "Producto": "Producto"
+  },
+  "estados": {
+    "Proforma": "Proforma",
+    "Completada": "Completada",
+    "Anulada": "Anulada"
+  },
+  "personalizacion": {
+    "Rosado": "Rosado",
+    "Azul": "Azul",
+    "Negro": "Negro",
+    "Morado": "Morado",
+    "Turquesa": "Turquesa",
+    "Sin mangas": "Sin mangas",
+    "Manga corta": "Manga corta",
+    "Manga larga": "Manga larga",
+    "Pedrería": "Pedrería",
+    "Brillo": "Brillo",
+    "Liso": "Liso"
+  }
+}

@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -22,15 +23,16 @@ import { EstadoChip } from './EstadoChip';
 
 //Encabezados de la tabla (máximo 4 campos + el enlace al detalle)
 const headCells = [
-  { id: 'fecha_cita', numeric: false, label: 'Fecha y hora' },
-  { id: 'cliente', numeric: false, label: 'Cliente' },
-  { id: 'servicio', numeric: false, label: 'Servicio' },
-  { id: 'nombre_estado', numeric: false, label: 'Estado' },
-  { id: 'detail', numeric: false, label: 'Detalle', sortable: false },
+  { id: 'fecha_cita', numeric: false, label: 'reserva:table.dateTime' },
+  { id: 'cliente', numeric: false, label: 'reserva:table.client' },
+  { id: 'servicio', numeric: false, label: 'reserva:table.service' },
+  { id: 'nombre_estado', numeric: false, label: 'reserva:table.status' },
+  { id: 'detail', numeric: false, label: 'common:detail', sortable: false },
 ];
 
 //Historial de reservas (citas) del encargado
 export default function TableReservas() {
+  const { t } = useTranslation();
   const [data, setData] = useState([]); //Resultado de consumo del API, respuesta
   const [error, setError] = useState(''); //Error del API
   const [loaded, setLoaded] = useState(false); //Booleano para establecer sí se ha recibido respuesta
@@ -69,8 +71,8 @@ export default function TableReservas() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
-  if (!loaded) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!loaded) return <p>{t('common:loading')}</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   return (
     <>
@@ -79,7 +81,7 @@ export default function TableReservas() {
           <Paper sx={{ width: '100%', mb: 2 }}>
             <Toolbar>
               <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
-                Historial de Reservas
+                {t('reserva:table.title')}
               </Typography>
             </Toolbar>
             <TableContainer>
@@ -107,7 +109,7 @@ export default function TableReservas() {
                           <EstadoChip nombre={row.nombre_estado} color={row.color_hex} />
                         </TableCell>
                         <TableCell>
-                          <Tooltip title="Ver detalle">
+                          <Tooltip title={t('common:viewDetail')}>
                             <IconButton component={Link} to={`/reserva/${row.id_reserva}`} color="primary">
                               <VisibilityIcon />
                             </IconButton>
@@ -132,8 +134,8 @@ export default function TableReservas() {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              labelRowsPerPage="Filas por página"
-              labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+              labelRowsPerPage={t('common:table.rowsPerPage')}
+              labelDisplayedRows={({ from, to, count }) => t('common:table.displayedRows', { from, to, count })}
             />
           </Paper>
         </Box>

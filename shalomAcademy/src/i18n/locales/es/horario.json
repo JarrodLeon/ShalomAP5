@@ -1,0 +1,47 @@
+{
+  "list": {
+    "title": "Mantenimiento Horarios",
+    "branch": "Sucursal",
+    "createSchedule": "Crear horario",
+    "createBlock": "Crear bloqueo",
+    "loadingSchedules": "Cargando horarios...",
+    "schedules": "Horarios",
+    "blocks": "Bloqueos",
+    "date": "Fecha",
+    "day": "Día",
+    "serviceHours": "Horario de servicio",
+    "blockedRange": "Rango bloqueado",
+    "reason": "Motivo",
+    "noSchedules": "La sucursal no tiene horarios registrados.",
+    "noBlocks": "La sucursal no tiene bloqueos registrados.",
+    "allDay": "Todo el día",
+    "noReason": "Sin motivo"
+  },
+  "detail": {
+    "scheduleTitle": "Detalle del horario",
+    "blockTitle": "Detalle del bloqueo",
+    "type": "Tipo",
+    "typeBlock": "Bloqueo",
+    "typeSchedule": "Horario de servicio",
+    "branch": "Sucursal",
+    "date": "Fecha",
+    "weekday": "Día de la semana",
+    "startTime": "Hora de inicio",
+    "endTime": "Hora final",
+    "reason": "Motivo"
+  },
+  "form": {
+    "createScheduleTitle": "Crear Horario",
+    "createBlockTitle": "Crear Bloqueo",
+    "branch": "Sucursal",
+    "date": "Fecha",
+    "startService": "Hora de inicio del servicio",
+    "endService": "Hora final del servicio",
+    "startBlock": "Hora de inicio del bloqueo",
+    "endBlock": "Hora final del bloqueo",
+    "allDay": "Bloquear todo el día",
+    "reason": "Motivo del bloqueo (opcional)",
+    "createdSchedule": "Horario creado #{{id}} - {{branch}}",
+    "createdBlock": "Bloqueo creado #{{id}} - {{branch}}"
+  }
+}

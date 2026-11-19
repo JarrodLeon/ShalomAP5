@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 export function Home() {
+  const { t } = useTranslation();
   return (
     <Container sx={{ p: 2 }} maxWidth="sm">
       <Typography
@@ -11,11 +13,10 @@ export function Home() {
         color="text.primary"
         gutterBottom
       >
-        Shalom Academy
+        {t('home:title')}
       </Typography>
       <Typography variant="h5" align="center" color="text.secondary">
-        Centro de gimnasia rítmica y artística en Turrucares, Alajuela. Agenda
-        tu clase de prueba, evaluación de nivel o clase privada.
+        {t('home:description')}
       </Typography>
     </Container>
   );

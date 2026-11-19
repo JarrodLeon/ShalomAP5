@@ -1,0 +1,49 @@
+{
+  "catalog": {
+    "title": "Our services",
+    "noResults": "No services were found with that name."
+  },
+  "card": {
+    "age": "Age"
+  },
+  "detail": {
+    "title": "Service details",
+    "rate": "Rate",
+    "duration": "Duration",
+    "modality": "Modality",
+    "age": "Recommended age"
+  },
+  "table": {
+    "title": "Services Maintenance",
+    "create": "Create service",
+    "age": "Recommended age",
+    "modality": "Modality",
+    "duration": "Duration",
+    "rate": "Rate"
+  },
+  "form": {
+    "createTitle": "Create Service",
+    "editTitle": "Edit Service",
+    "rate": "Rate (₡)",
+    "time": "Service time",
+    "unit": "Unit",
+    "minutes": "Minutes",
+    "hours": "Hours",
+    "modality": "Modality",
+    "age": "Recommended age",
+    "created": "Service created #{{id}} - {{name}}",
+    "modified": "Service updated #{{id}} - {{name}}",
+    "imageUploadError": "Service saved, but the image could not be uploaded: {{message}}",
+    "notFound": "Service not found"
+  },
+  "modalidad": {
+    "Individual": "Individual",
+    "Grupal": "Group"
+  },
+  "duracion": {
+    "min": "{{count}} min",
+    "hour_one": "{{count}} hour",
+    "hour_other": "{{count}} hours",
+    "hoursMinutes": "{{hours}} h {{minutes}} min"
+  }
+}

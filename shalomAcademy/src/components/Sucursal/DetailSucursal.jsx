@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -14,6 +15,7 @@ import { Dato } from '../Layout/Dato';
 
 //Componente para mostrar el detalle de una sucursal
 export function DetailSucursal() {
+  const { t } = useTranslation();
   const routeParams = useParams(); //Obtener los parámetros de la ruta, en este caso el id de la sucursal
   const navigate = useNavigate(); //Función para volver a la página anterior
 
@@ -35,23 +37,23 @@ export function DetailSucursal() {
       });
   }, [routeParams.id]);
 
-  if (!loaded) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!loaded) return <p>{t('common:loading')}</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   return (
     <Container component="main" sx={{ mt: 4, mb: 2 }}>
       {data && data.id_sucursal && (
         <Paper sx={{ p: 4, maxWidth: 900, mx: 'auto' }}>
           <Typography variant="h4" component="h1" gutterBottom>
-            Detalle de la sucursal
+            {t('sucursal:detail.title')}
           </Typography>
-          <Dato etiqueta="Nombre">{data.nombre}</Dato>
-          <Dato etiqueta="Descripción">{data.descripcion}</Dato>
-          <Dato etiqueta="Teléfono">{data.telefono}</Dato>
-          <Dato etiqueta="Dirección exacta">{data.direccion_exacta}</Dato>
-          <Dato etiqueta="Correo electrónico">{data.correo_electronico}</Dato>
+          <Dato etiqueta={t('common:name')}>{data.nombre}</Dato>
+          <Dato etiqueta={t('common:description')}>{data.descripcion}</Dato>
+          <Dato etiqueta={t('sucursal:detail.phone')}>{data.telefono}</Dato>
+          <Dato etiqueta={t('sucursal:detail.address')}>{data.direccion_exacta}</Dato>
+          <Dato etiqueta={t('sucursal:detail.email')}>{data.correo_electronico}</Dato>
           <Typography variant="subtitle1" fontWeight="bold" sx={{ mt: 2 }}>
-            Encargados:
+            {t('sucursal:detail.managers') + ':'}
           </Typography>
           {data.encargados.length > 0 ? (
             <List dense>
@@ -62,7 +64,7 @@ export function DetailSucursal() {
               ))}
             </List>
           ) : (
-            <Typography>Esta sucursal no tiene encargados asignados.</Typography>
+            <Typography>{t('sucursal:detail.noManagers')}</Typography>
           )}
         </Paper>
       )}
@@ -73,7 +75,7 @@ export function DetailSucursal() {
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate(-1)}
         >
-          Regresar
+          {t('common:back')}
         </Button>
       </Box>
     </Container>

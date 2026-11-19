@@ -1,0 +1,30 @@
+{
+  "header": {
+    "home": "Shalom Academy",
+    "products": "Productos",
+    "services": "Servicios",
+    "reservations": "Reservas",
+    "invoices": "Facturas",
+    "maintenance": "Mantenimiento",
+    "maintProducts": "Productos",
+    "maintServices": "Servicios",
+    "maintBranches": "Sucursales",
+    "maintSchedules": "Horarios y bloqueos",
+    "mobileMaintenance": "Mantenimiento {{name}}",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar sesión",
+    "account": "Cuenta de usuario",
+    "language": "Idioma",
+    "spanish": "Español",
+    "english": "English"
+  },
+  "footer": {
+    "text": "Shalom Academy · ISW-613"
+  },
+  "notFound": {
+    "title": "Recurso no encontrado",
+    "text": "La página que está buscando podría haber sido eliminada, cambió su nombre o no está disponible temporalmente",
+    "imageAlt": "Shalom Academy"
+  }
+}

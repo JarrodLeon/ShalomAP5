@@ -41,7 +41,7 @@ class horario
         } catch (InvalidArgumentException $e) {
             //Mensajes de validación: sobreposiciones, fecha anterior a la actual, etc.
             http_response_code(400);
-            echo json_encode(array('status' => 400, 'result' => $e->getMessage()), JSON_UNESCAPED_UNICODE);
+            echo json_encode(array('status' => 400, 'result' => MensajesModel::traducir($e->getMessage())), JSON_UNESCAPED_UNICODE);
         } catch (Exception $e) {
             handleException($e);
         }

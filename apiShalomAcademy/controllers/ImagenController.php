@@ -16,7 +16,7 @@ class imagen
             $response->toJSON($result);
         } catch (InvalidArgumentException $e) {
             http_response_code(400);
-            echo json_encode(array('status' => 400, 'result' => $e->getMessage()), JSON_UNESCAPED_UNICODE);
+            echo json_encode(array('status' => 400, 'result' => MensajesModel::traducir($e->getMessage())), JSON_UNESCAPED_UNICODE);
         } catch (Exception $e) {
             handleException($e);
         }

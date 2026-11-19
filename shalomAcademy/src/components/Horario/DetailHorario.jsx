@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -12,6 +13,7 @@ import { Dato } from '../Layout/Dato';
 
 //Componente para mostrar el detalle de un horario o de un bloqueo
 export function DetailHorario() {
+  const { t } = useTranslation();
   const routeParams = useParams(); //Obtener el id del registro desde la ruta
   const navigate = useNavigate(); //Función para volver a la página anterior
 
@@ -33,8 +35,8 @@ export function DetailHorario() {
       });
   }, [routeParams.id]);
 
-  if (!loaded) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!loaded) return <p>{t('common:loading')}</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   const esBloqueo = data ? esVerdadero(data.es_bloqueo) : false;
 
@@ -43,15 +45,15 @@ export function DetailHorario() {
       {data && data.id_horario && (
         <Paper sx={{ p: 4, maxWidth: 900, mx: 'auto' }}>
           <Typography variant="h4" component="h1" gutterBottom>
-            {esBloqueo ? 'Detalle del bloqueo' : 'Detalle del horario'}
+            {esBloqueo ? t('horario:detail.blockTitle') : t('horario:detail.scheduleTitle')}
           </Typography>
-          <Dato etiqueta="Tipo">{esBloqueo ? 'Bloqueo' : 'Horario de servicio'}</Dato>
-          <Dato etiqueta="Sucursal">{data.sucursal}</Dato>
-          <Dato etiqueta="Fecha">{formatFecha(data.fecha)}</Dato>
-          <Dato etiqueta="Día de la semana">{data.dia_semana}</Dato>
-          <Dato etiqueta="Hora de inicio">{formatHora(data.hora_inicio)}</Dato>
-          <Dato etiqueta="Hora final">{formatHora(data.hora_fin)}</Dato>
-          {esBloqueo && <Dato etiqueta="Motivo">{data.motivo ? data.motivo : 'Sin motivo'}</Dato>}
+          <Dato etiqueta={t('horario:detail.type')}>{esBloqueo ? t('horario:detail.typeBlock') : t('horario:detail.typeSchedule')}</Dato>
+          <Dato etiqueta={t('horario:detail.branch')}>{data.sucursal}</Dato>
+          <Dato etiqueta={t('horario:detail.date')}>{formatFecha(data.fecha)}</Dato>
+          <Dato etiqueta={t('horario:detail.weekday')}>{t(`common:days.${data.dia_semana}`, { defaultValue: data.dia_semana })}</Dato>
+          <Dato etiqueta={t('horario:detail.startTime')}>{formatHora(data.hora_inicio)}</Dato>
+          <Dato etiqueta={t('horario:detail.endTime')}>{formatHora(data.hora_fin)}</Dato>
+          {esBloqueo && <Dato etiqueta={t('horario:detail.reason')}>{data.motivo ? data.motivo : t('horario:list.noReason')}</Dato>}
         </Paper>
       )}
       <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
@@ -61,7 +63,7 @@ export function DetailHorario() {
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate(-1)}
         >
-          Regresar
+          {t('common:back')}
         </Button>
       </Box>
     </Container>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import TableCell from '@mui/material/TableCell';
@@ -15,6 +16,7 @@ SortableTableHead.propTypes = {
 
 //Encabezado de tabla con ordenamiento por columna
 export function SortableTableHead({ headCells, order, orderBy, onRequestSort }) {
+  const { t } = useTranslation();
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -29,17 +31,17 @@ export function SortableTableHead({ headCells, order, orderBy, onRequestSort }) 
             sortDirection={orderBy === headCell.id ? order : false}
           >
             {headCell.sortable === false ? (
-              headCell.label
+              t(headCell.label)
             ) : (
               <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : 'asc'}
                 onClick={createSortHandler(headCell.id)}
               >
-                {headCell.label}
+                {t(headCell.label)}
                 {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
-                    {order === 'desc' ? 'ordenado descendente' : 'ordenado ascendente'}
+                    {order === 'desc' ? t('common:table.sortedDesc') : t('common:table.sortedAsc')}
                   </Box>
                 ) : null}
               </TableSortLabel>

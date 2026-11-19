@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -29,6 +30,7 @@ function esTodoElDia(row) {
 
 //Listado de horarios y bloqueos de la sucursal seleccionada
 export function ListHorarios() {
+  const { t } = useTranslation();
   const location = useLocation();
 
   const [error, setError] = useState('');
@@ -72,21 +74,21 @@ export function ListHorarios() {
 
   const cargandoHorarios = resultado.sucursal !== sucursalId;
 
-  if (error) return <p>Error: {error.message}</p>;
-  if (!loadedSucursales) return <p>Cargando...</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
+  if (!loadedSucursales) return <p>{t('common:loading')}</p>;
 
   return (
     <Box sx={{ p: 2 }}>
       <Typography variant="h5" gutterBottom>
-        Mantenimiento Horarios
+        {t('horario:list.title')}
       </Typography>
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center', mb: 3 }}>
         {/* Selección de la sucursal */}
         <FormControl sx={{ minWidth: 260 }} size="small">
-          <InputLabel id="sucursal-label">Sucursal</InputLabel>
+          <InputLabel id="sucursal-label">{t('horario:list.branch')}</InputLabel>
           <Select
             labelId="sucursal-label"
-            label="Sucursal"
+            label={t('horario:list.branch')}
             value={sucursalId}
             onChange={(event) => setSucursalId(event.target.value)}
           >
@@ -105,7 +107,7 @@ export function ListHorarios() {
           color="secondary"
           startIcon={<AddIcon />}
         >
-          Crear horario
+          {t('horario:list.createSchedule')}
         </Button>
         <Button
           component={Link}
@@ -115,36 +117,36 @@ export function ListHorarios() {
           color="secondary"
           startIcon={<AddIcon />}
         >
-          Crear bloqueo
+          {t('horario:list.createBlock')}
         </Button>
       </Box>
 
-      {cargandoHorarios && sucursalId && <p>Cargando horarios...</p>}
+      {cargandoHorarios && sucursalId && <p>{t('horario:list.loadingSchedules')}</p>}
 
       {!cargandoHorarios && resultado.data && (
         <>
           {/* Horarios de la sucursal */}
           <Typography variant="h6" gutterBottom>
-            Horarios
+            {t('horario:list.schedules')}
           </Typography>
           <TableContainer component={Paper} sx={{ mb: 4 }}>
             <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell>Fecha</TableCell>
-                  <TableCell>Día</TableCell>
-                  <TableCell>Horario de servicio</TableCell>
-                  <TableCell>Detalle</TableCell>
+                  <TableCell>{t('horario:list.date')}</TableCell>
+                  <TableCell>{t('horario:list.day')}</TableCell>
+                  <TableCell>{t('horario:list.serviceHours')}</TableCell>
+                  <TableCell>{t('common:detail')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {resultado.data.horarios.map((row) => (
                   <TableRow hover key={row.id_horario}>
                     <TableCell>{formatFecha(row.fecha)}</TableCell>
-                    <TableCell>{row.dia_semana}</TableCell>
+                    <TableCell>{t(`common:days.${row.dia_semana}`, { defaultValue: row.dia_semana })}</TableCell>
                     <TableCell>{rangoHoras(row.hora_inicio, row.hora_fin)}</TableCell>
                     <TableCell>
-                      <Tooltip title="Ver detalle">
+                      <Tooltip title={t('common:viewDetail')}>
                         <IconButton component={Link} to={`/horario/${row.id_horario}`} color="primary">
                           <VisibilityIcon />
                         </IconButton>
@@ -154,7 +156,7 @@ export function ListHorarios() {
                 ))}
                 {resultado.data.horarios.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={4}>La sucursal no tiene horarios registrados.</TableCell>
+                    <TableCell colSpan={4}>{t('horario:list.noSchedules')}</TableCell>
                   </TableRow>
                 )}
               </TableBody>
@@ -163,30 +165,30 @@ export function ListHorarios() {
 
           {/* Bloqueos de la sucursal */}
           <Typography variant="h6" gutterBottom>
-            Bloqueos
+            {t('horario:list.blocks')}
           </Typography>
           <TableContainer component={Paper}>
             <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell>Fecha</TableCell>
-                  <TableCell>Día</TableCell>
-                  <TableCell>Rango bloqueado</TableCell>
-                  <TableCell>Motivo</TableCell>
-                  <TableCell>Detalle</TableCell>
+                  <TableCell>{t('horario:list.date')}</TableCell>
+                  <TableCell>{t('horario:list.day')}</TableCell>
+                  <TableCell>{t('horario:list.blockedRange')}</TableCell>
+                  <TableCell>{t('horario:list.reason')}</TableCell>
+                  <TableCell>{t('common:detail')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {resultado.data.bloqueos.map((row) => (
                   <TableRow hover key={row.id_horario}>
                     <TableCell>{formatFecha(row.fecha)}</TableCell>
-                    <TableCell>{row.dia_semana}</TableCell>
+                    <TableCell>{t(`common:days.${row.dia_semana}`, { defaultValue: row.dia_semana })}</TableCell>
                     <TableCell>
-                      {esTodoElDia(row) ? 'Todo el día' : rangoHoras(row.hora_inicio, row.hora_fin)}
+                      {esTodoElDia(row) ? t('horario:list.allDay') : rangoHoras(row.hora_inicio, row.hora_fin)}
                     </TableCell>
-                    <TableCell>{row.motivo ? row.motivo : 'Sin motivo'}</TableCell>
+                    <TableCell>{row.motivo ? row.motivo : t('horario:list.noReason')}</TableCell>
                     <TableCell>
-                      <Tooltip title="Ver detalle">
+                      <Tooltip title={t('common:viewDetail')}>
                         <IconButton component={Link} to={`/horario/${row.id_horario}`} color="primary">
                           <VisibilityIcon />
                         </IconButton>
@@ -196,7 +198,7 @@ export function ListHorarios() {
                 ))}
                 {resultado.data.bloqueos.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={5}>La sucursal no tiene bloqueos registrados.</TableCell>
+                    <TableCell colSpan={5}>{t('horario:list.noBlocks')}</TableCell>
                   </TableRow>
                 )}
               </TableBody>

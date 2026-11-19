@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
@@ -26,29 +27,30 @@ import { mensajeError } from '../../utils/apiError';
 const productoSchema = yup.object({
   nombre: yup
     .string()
-    .required('El nombre es requerido')
-    .min(2, 'El nombre debe tener al menos 2 caracteres'),
-  descripcion: yup.string().required('La descripción es requerida'),
+    .required('validation:nombreRequerido')
+    .min(2, 'validation:nombreMin'),
+  descripcion: yup.string().required('validation:descripcionRequerida'),
   id_categoria: yup
     .number()
-    .typeError('Seleccione una categoría')
-    .required('La categoría es requerida'),
+    .typeError('validation:categoriaSeleccione')
+    .required('validation:categoriaRequerida'),
   precio: yup
     .number()
-    .typeError('Solo acepta números')
-    .required('El precio es requerido')
-    .positive('El precio debe ser mayor a cero'),
+    .typeError('validation:soloNumeros')
+    .required('validation:precioRequerido')
+    .positive('validation:precioPositivo'),
   stock_disponible: yup
     .number()
-    .typeError('Solo acepta números')
-    .required('El stock es requerido')
-    .integer('El stock debe ser un número entero')
-    .min(0, 'El stock no puede ser negativo'),
+    .typeError('validation:soloNumeros')
+    .required('validation:stockRequerido')
+    .integer('validation:stockEntero')
+    .min(0, 'validation:stockMin'),
   es_personalizable: yup.boolean(),
 });
 
 //Formulario para crear y modificar un producto (si la ruta trae un id, modifica)
 export function FormProducto() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams(); //Id del producto a modificar (no existe al crear)
   const esEdicion = Boolean(id);
@@ -124,7 +126,7 @@ export function FormProducto() {
 
   //Validación de la imagen: es requerida al crear
   const validarImagenFormulario = () => {
-    const mensaje = !esEdicion && !imagen ? 'La imagen es requerida' : validarImagen(imagen);
+    const mensaje = !esEdicion && !imagen ? 'validation:imagenRequerida' : validarImagen(imagen);
     setImagenError(mensaje);
     return mensaje === '';
   };
@@ -164,14 +166,14 @@ export function FormProducto() {
               await ImageService.createImage(formData);
             } catch (errorImagen) {
               toast.error(
-                `Producto guardado, pero la imagen no se pudo subir: ${mensajeError(errorImagen)}`,
+                t('producto:form.imageUploadError', { message: mensajeError(errorImagen) }),
                 { duration: 6000, position: 'top-center' },
               );
               return navigate('/mantenimiento-productos');
             }
           }
           toast.success(
-            `Producto ${esEdicion ? 'modificado' : 'creado'} #${guardado.id_producto} - ${guardado.nombre}`,
+            t(esEdicion ? 'producto:form.modified' : 'producto:form.created', { id: guardado.id_producto, name: guardado.nombre }),
             { duration: 4000, position: 'top-center' },
           );
           //Redirección a la tabla de mantenimiento
@@ -184,16 +186,16 @@ export function FormProducto() {
       });
   };
 
-  if (error) return <p>Error: {error.message}</p>;
-  if (!loadedCategorias) return <p>Cargando...</p>;
-  if (noEncontrado) return <p>Producto no encontrado</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
+  if (!loadedCategorias) return <p>{t('common:loading')}</p>;
+  if (noEncontrado) return <p>{t('producto:form.notFound')}</p>;
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
       <Grid container spacing={2} sx={{ p: 2 }}>
         <Grid size={12}>
           <Typography variant="h5" gutterBottom>
-            {esEdicion ? 'Modificar Producto' : 'Crear Producto'}
+            {esEdicion ? t('producto:form.editTitle') : t('producto:form.createTitle')}
           </Typography>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
@@ -205,10 +207,10 @@ export function FormProducto() {
               <TextField
                 {...field}
                 id="nombre"
-                label="Nombre"
+                label={t('common:name')}
                 fullWidth
                 error={Boolean(errors.nombre)}
-                helperText={errors.nombre ? errors.nombre.message : ' '}
+                helperText={errors.nombre ? t(errors.nombre.message) : ' '}
               />
             )}
           />
@@ -216,22 +218,22 @@ export function FormProducto() {
         <Grid size={{ xs: 12, sm: 6 }}>
           {/* Lista de categorías */}
           <FormControl fullWidth error={Boolean(errors.id_categoria)}>
-            <InputLabel id="categoria-label">Categoría</InputLabel>
+            <InputLabel id="categoria-label">{t('producto:form.category')}</InputLabel>
             <Controller
               name="id_categoria"
               control={control}
               render={({ field }) => (
-                <Select {...field} labelId="categoria-label" label="Categoría" value={field.value}>
+                <Select {...field} labelId="categoria-label" label={t('producto:form.category')} value={field.value}>
                   {dataCategorias.map((categoria) => (
                     <MenuItem key={categoria.id_categoria} value={Number(categoria.id_categoria)}>
-                      {categoria.nombre_categoria}
+                      {t(`producto:categorias.${categoria.nombre_categoria}`, { defaultValue: categoria.nombre_categoria })}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             />
             <FormHelperText sx={{ color: '#d32f2f' }}>
-              {errors.id_categoria ? errors.id_categoria.message : ' '}
+              {errors.id_categoria ? t(errors.id_categoria.message) : ' '}
             </FormHelperText>
           </FormControl>
         </Grid>
@@ -243,12 +245,12 @@ export function FormProducto() {
               <TextField
                 {...field}
                 id="descripcion"
-                label="Descripción"
+                label={t('common:description')}
                 fullWidth
                 multiline
                 minRows={3}
                 error={Boolean(errors.descripcion)}
-                helperText={errors.descripcion ? errors.descripcion.message : ' '}
+                helperText={errors.descripcion ? t(errors.descripcion.message) : ' '}
               />
             )}
           />
@@ -261,12 +263,12 @@ export function FormProducto() {
               <TextField
                 {...field}
                 id="precio"
-                label="Precio (₡)"
+                label={t('producto:form.price')}
                 type="number"
                 fullWidth
                 slotProps={{ htmlInput: { min: 0, step: '0.01' } }}
                 error={Boolean(errors.precio)}
-                helperText={errors.precio ? errors.precio.message : ' '}
+                helperText={errors.precio ? t(errors.precio.message) : ' '}
               />
             )}
           />
@@ -280,12 +282,12 @@ export function FormProducto() {
               <TextField
                 {...field}
                 id="stock_disponible"
-                label="Stock disponible"
+                label={t('producto:form.stock')}
                 type="number"
                 fullWidth
                 slotProps={{ htmlInput: { min: 0, step: '1' } }}
                 error={Boolean(errors.stock_disponible)}
-                helperText={errors.stock_disponible ? errors.stock_disponible.message : ' '}
+                helperText={errors.stock_disponible ? t(errors.stock_disponible.message) : ' '}
               />
             )}
           />
@@ -298,7 +300,7 @@ export function FormProducto() {
             render={({ field }) => (
               <FormControlLabel
                 control={<Switch checked={Boolean(field.value)} onChange={field.onChange} />}
-                label="Producto personalizable"
+                label={t('producto:form.customizable')}
               />
             )}
           />
@@ -314,10 +316,10 @@ export function FormProducto() {
         </Grid>
         <Grid size={12}>
           <Button type="submit" variant="contained" color="secondary" sx={{ m: 1 }}>
-            Guardar
+            {t('common:save')}
           </Button>
           <Button variant="outlined" sx={{ m: 1 }} onClick={() => navigate(-1)}>
-            Cancelar
+            {t('common:cancel')}
           </Button>
         </Grid>
       </Grid>

@@ -1,0 +1,31 @@
+{
+  "table": {
+    "title": "Mantenimiento Sucursales",
+    "create": "Crear sucursal",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "address": "Dirección exacta",
+    "managers": "Encargados",
+    "empty": "No hay sucursales registradas."
+  },
+  "detail": {
+    "title": "Detalle de la sucursal",
+    "phone": "Teléfono",
+    "address": "Dirección exacta",
+    "email": "Correo electrónico",
+    "managers": "Encargados",
+    "noManagers": "Esta sucursal no tiene encargados asignados."
+  },
+  "form": {
+    "createTitle": "Crear Sucursal",
+    "editTitle": "Modificar Sucursal",
+    "phone": "Número de teléfono",
+    "address": "Dirección exacta",
+    "email": "Correo electrónico",
+    "managers": "Encargados",
+    "noAvailable": "No hay usuarios encargados sin sucursal asignada",
+    "created": "Sucursal creada #{{id}} - {{name}}",
+    "modified": "Sucursal modificada #{{id}} - {{name}}",
+    "notFound": "Sucursal no encontrada"
+  }
+}

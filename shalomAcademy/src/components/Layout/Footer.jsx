@@ -1,8 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { Container, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
 
 export function Footer() {
+  const { t } = useTranslation();
   return (
     <Toolbar
       sx={{
@@ -20,7 +22,7 @@ export function Footer() {
         <Grid container rowSpacing={1}>
           <Grid size={12}>
             <Typography align="center" color="white" variant="subtitle1">
-              Shalom Academy 
+              {t('layout:footer.text')}
             </Typography>
           </Grid>
           <Grid size={12}>

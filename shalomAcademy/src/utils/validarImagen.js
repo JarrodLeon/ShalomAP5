@@ -1,12 +1,13 @@
-//Valida la imagen seleccionada antes de enviarla al API. Devuelve el mensaje de error o ''
+//Valida la imagen seleccionada antes de enviarla al API.
+//Devuelve la CLAVE del mensaje de error (se traduce al mostrarlo) o '' si es válida
 export function validarImagen(file) {
   if (!file) return '';
   const tiposValidos = ['image/jpeg', 'image/png', 'image/gif'];
   if (!tiposValidos.includes(file.type)) {
-    return 'Solo se permiten imágenes jpeg, jpg, png o gif';
+    return 'validation:imagenTipo';
   }
   if (file.size > 2000000) {
-    return 'La imagen no puede superar los 2 MB';
+    return 'validation:imagenTamano';
   }
   return '';
 }

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
@@ -23,24 +24,25 @@ import { mensajeError } from '../../utils/apiError';
 const sucursalSchema = yup.object({
   nombre: yup
     .string()
-    .required('El nombre es requerido')
-    .min(2, 'El nombre debe tener al menos 2 caracteres'),
-  descripcion: yup.string().required('La descripción es requerida'),
+    .required('validation:nombreRequerido')
+    .min(2, 'validation:nombreMin'),
+  descripcion: yup.string().required('validation:descripcionRequerida'),
   telefono: yup
     .string()
-    .required('El teléfono es requerido')
-    .matches(/^[0-9]{4}-?[0-9]{4}$/, 'Debe tener 8 dígitos (ej. 2441-1010)'),
-  direccion_exacta: yup.string().required('La dirección exacta es requerida'),
+    .required('validation:telefonoRequerido')
+    .matches(/^[0-9]{4}-?[0-9]{4}$/, 'validation:telefonoFormato'),
+  direccion_exacta: yup.string().required('validation:direccionRequerida'),
   correo_electronico: yup
     .string()
-    .required('El correo electrónico es requerido')
-    .email('El correo electrónico no tiene un formato válido'),
+    .required('validation:correoRequerido')
+    .email('validation:correoFormato'),
   //Relación de muchos: el valor por defecto es un arreglo
-  encargados: yup.array().min(1, 'Seleccione al menos un encargado'),
+  encargados: yup.array().min(1, 'validation:encargadosMin'),
 });
 
 //Formulario para crear y modificar una sucursal (si la ruta trae un id, modifica)
 export function FormSucursal() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams(); //Id de la sucursal a modificar (no existe al crear)
   const esEdicion = Boolean(id);
@@ -120,7 +122,7 @@ export function FormSucursal() {
         const guardada = response.data;
         if (guardada && guardada.id_sucursal) {
           toast.success(
-            `Sucursal ${esEdicion ? 'modificada' : 'creada'} #${guardada.id_sucursal} - ${guardada.nombre}`,
+            t(esEdicion ? 'sucursal:form.modified' : 'sucursal:form.created', { id: guardada.id_sucursal, name: guardada.nombre }),
             { duration: 4000, position: 'top-center' },
           );
           //Redirección a la tabla de sucursales
@@ -133,16 +135,16 @@ export function FormSucursal() {
       });
   };
 
-  if (error) return <p>Error: {error.message}</p>;
-  if (!loadedEncargados) return <p>Cargando...</p>;
-  if (noEncontrado) return <p>Sucursal no encontrada</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
+  if (!loadedEncargados) return <p>{t('common:loading')}</p>;
+  if (noEncontrado) return <p>{t('sucursal:form.notFound')}</p>;
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
       <Grid container spacing={2} sx={{ p: 2 }}>
         <Grid size={12}>
           <Typography variant="h5" gutterBottom>
-            {esEdicion ? 'Modificar Sucursal' : 'Crear Sucursal'}
+            {esEdicion ? t('sucursal:form.editTitle') : t('sucursal:form.createTitle')}
           </Typography>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
@@ -153,10 +155,10 @@ export function FormSucursal() {
               <TextField
                 {...field}
                 id="nombre"
-                label="Nombre"
+                label={t('common:name')}
                 fullWidth
                 error={Boolean(errors.nombre)}
-                helperText={errors.nombre ? errors.nombre.message : ' '}
+                helperText={errors.nombre ? t(errors.nombre.message) : ' '}
               />
             )}
           />
@@ -169,10 +171,10 @@ export function FormSucursal() {
               <TextField
                 {...field}
                 id="telefono"
-                label="Número de teléfono"
+                label={t('sucursal:form.phone')}
                 fullWidth
                 error={Boolean(errors.telefono)}
-                helperText={errors.telefono ? errors.telefono.message : ' '}
+                helperText={errors.telefono ? t(errors.telefono.message) : ' '}
               />
             )}
           />
@@ -185,12 +187,12 @@ export function FormSucursal() {
               <TextField
                 {...field}
                 id="descripcion"
-                label="Descripción"
+                label={t('common:description')}
                 fullWidth
                 multiline
                 minRows={3}
                 error={Boolean(errors.descripcion)}
-                helperText={errors.descripcion ? errors.descripcion.message : ' '}
+                helperText={errors.descripcion ? t(errors.descripcion.message) : ' '}
               />
             )}
           />
@@ -203,10 +205,10 @@ export function FormSucursal() {
               <TextField
                 {...field}
                 id="direccion_exacta"
-                label="Dirección exacta"
+                label={t('sucursal:form.address')}
                 fullWidth
                 error={Boolean(errors.direccion_exacta)}
-                helperText={errors.direccion_exacta ? errors.direccion_exacta.message : ' '}
+                helperText={errors.direccion_exacta ? t(errors.direccion_exacta.message) : ' '}
               />
             )}
           />
@@ -219,10 +221,10 @@ export function FormSucursal() {
               <TextField
                 {...field}
                 id="correo_electronico"
-                label="Correo electrónico"
+                label={t('sucursal:form.email')}
                 fullWidth
                 error={Boolean(errors.correo_electronico)}
-                helperText={errors.correo_electronico ? errors.correo_electronico.message : ' '}
+                helperText={errors.correo_electronico ? t(errors.correo_electronico.message) : ' '}
               />
             )}
           />
@@ -230,7 +232,7 @@ export function FormSucursal() {
         <Grid size={12}>
           {/* Lista de usuarios encargados disponibles (se pueden seleccionar varios) */}
           <FormControl fullWidth error={Boolean(errors.encargados)}>
-            <InputLabel id="encargados-label">Encargados</InputLabel>
+            <InputLabel id="encargados-label">{t('sucursal:form.managers')}</InputLabel>
             <Controller
               name="encargados"
               control={control}
@@ -238,7 +240,7 @@ export function FormSucursal() {
                 <Select
                   {...field}
                   labelId="encargados-label"
-                  label="Encargados"
+                  label={t('sucursal:form.managers')}
                   multiple
                   value={field.value}
                   renderValue={(seleccionados) =>
@@ -259,19 +261,19 @@ export function FormSucursal() {
             />
             <FormHelperText sx={{ color: '#d32f2f' }}>
               {errors.encargados
-                ? errors.encargados.message
+                ? t(errors.encargados.message)
                 : dataEncargados.length === 0
-                  ? 'No hay usuarios encargados sin sucursal asignada'
+                  ? t('sucursal:form.noAvailable')
                   : ' '}
             </FormHelperText>
           </FormControl>
         </Grid>
         <Grid size={12}>
           <Button type="submit" variant="contained" color="secondary" sx={{ m: 1 }}>
-            Guardar
+            {t('common:save')}
           </Button>
           <Button variant="outlined" sx={{ m: 1 }} onClick={() => navigate(-1)}>
-            Cancelar
+            {t('common:cancel')}
           </Button>
         </Grid>
       </Grid>

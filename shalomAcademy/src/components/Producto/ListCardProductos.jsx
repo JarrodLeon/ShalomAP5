@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -17,6 +18,7 @@ ListCardProductos.propTypes = {
 };
 
 export function ListCardProductos({ data }) {
+  const { t } = useTranslation();
   //Url para acceder a las imágenes guardadas en el API
   const BASE_URL = import.meta.env.VITE_BASE_URL + 'uploads';
 
@@ -36,7 +38,7 @@ export function ListCardProductos({ data }) {
                 }}
                 style={{ textAlign: 'center' }}
                 title={item.nombre}
-                subheader={item.nombre_categoria}
+                subheader={t(`producto:categorias.${item.nombre_categoria}`, { defaultValue: item.nombre_categoria })}
                 slotProps={{
                   subheader: { sx: { color: 'common.white' } },
                 }}
@@ -62,7 +64,7 @@ export function ListCardProductos({ data }) {
                 <IconButton
                   component={Link}
                   to={`/producto/${item.id_producto}`}
-                  aria-label="Detalle"
+                  aria-label={t('common:detail')}
                   sx={{ ml: 'auto' }}
                 >
                   <Info />

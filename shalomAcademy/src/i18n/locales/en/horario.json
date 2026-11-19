@@ -1,0 +1,47 @@
+{
+  "list": {
+    "title": "Schedules Maintenance",
+    "branch": "Branch",
+    "createSchedule": "Create schedule",
+    "createBlock": "Create block",
+    "loadingSchedules": "Loading schedules...",
+    "schedules": "Schedules",
+    "blocks": "Blocks",
+    "date": "Date",
+    "day": "Day",
+    "serviceHours": "Service hours",
+    "blockedRange": "Blocked range",
+    "reason": "Reason",
+    "noSchedules": "The branch has no registered schedules.",
+    "noBlocks": "The branch has no registered blocks.",
+    "allDay": "All day",
+    "noReason": "No reason"
+  },
+  "detail": {
+    "scheduleTitle": "Schedule details",
+    "blockTitle": "Block details",
+    "type": "Type",
+    "typeBlock": "Block",
+    "typeSchedule": "Service schedule",
+    "branch": "Branch",
+    "date": "Date",
+    "weekday": "Day of the week",
+    "startTime": "Start time",
+    "endTime": "End time",
+    "reason": "Reason"
+  },
+  "form": {
+    "createScheduleTitle": "Create Schedule",
+    "createBlockTitle": "Create Block",
+    "branch": "Branch",
+    "date": "Date",
+    "startService": "Service start time",
+    "endService": "Service end time",
+    "startBlock": "Block start time",
+    "endBlock": "Block end time",
+    "allDay": "Block the whole day",
+    "reason": "Reason for the block (optional)",
+    "createdSchedule": "Schedule created #{{id}} - {{branch}}",
+    "createdBlock": "Block created #{{id}} - {{branch}}"
+  }
+}

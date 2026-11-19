@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -26,16 +27,17 @@ import { SortableTableHead } from '../Layout/SortableTableHead';
 
 //Encabezados de la tabla
 const headCells = [
-  { id: 'nombre', numeric: false, label: 'Nombre' },
-  { id: 'nombre_categoria', numeric: false, label: 'Categoría' },
-  { id: 'precio', numeric: true, label: 'Precio' },
-  { id: 'stock_disponible', numeric: true, label: 'Stock' },
-  { id: 'es_personalizable', numeric: false, label: 'Personalizable' },
-  { id: 'acciones', numeric: false, label: 'Acciones', sortable: false },
+  { id: 'nombre', numeric: false, label: 'common:name' },
+  { id: 'nombre_categoria', numeric: false, label: 'producto:table.category' },
+  { id: 'precio', numeric: true, label: 'producto:table.price' },
+  { id: 'stock_disponible', numeric: true, label: 'producto:table.stock' },
+  { id: 'es_personalizable', numeric: false, label: 'producto:table.customizable' },
+  { id: 'acciones', numeric: false, label: 'common:actions', sortable: false },
 ];
 
 //Componente tabla (mantenimiento de productos)
 export default function TableProductos() {
+  const { t } = useTranslation();
   //Datos a cargar en la tabla
   const [data, setData] = useState([]); //Resultado de consumo del API, respuesta
   const [error, setError] = useState(''); //Error del API
@@ -84,15 +86,15 @@ export default function TableProductos() {
   //Evita un salto de diseño al llegar a la última página con datos vacíos
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
-  if (!loaded) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!loaded) return <p>{t('common:loading')}</p>;
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <Toolbar sx={{ gap: 2, flexWrap: 'wrap', py: 1 }}>
           <Typography sx={{ flex: '1 1 auto' }} variant="h6" id="tableTitle" component="div">
-            Mantenimiento Productos
+            {t('producto:table.title')}
           </Typography>
           {/* Crear producto */}
           <Button
@@ -102,7 +104,7 @@ export default function TableProductos() {
             color="secondary"
             startIcon={<AddIcon />}
           >
-            Crear producto
+            {t('producto:table.create')}
           </Button>
         </Toolbar>
         <TableContainer>
@@ -119,17 +121,17 @@ export default function TableProductos() {
                 .map((row) => (
                   <TableRow hover key={row.id_producto}>
                     <TableCell>{row.nombre}</TableCell>
-                    <TableCell>{row.nombre_categoria}</TableCell>
+                    <TableCell>{t(`producto:categorias.${row.nombre_categoria}`, { defaultValue: row.nombre_categoria })}</TableCell>
                     <TableCell align="right">{formatMoneda(row.precio)}</TableCell>
                     <TableCell align="right">{row.stock_disponible}</TableCell>
-                    <TableCell>{esVerdadero(row.es_personalizable) ? 'Sí' : 'No'}</TableCell>
+                    <TableCell>{esVerdadero(row.es_personalizable) ? t('common:yes') : t('common:no')}</TableCell>
                     <TableCell>
-                      <Tooltip title="Ver detalle">
+                      <Tooltip title={t('common:viewDetail')}>
                         <IconButton component={Link} to={`/producto/${row.id_producto}`} color="primary">
                           <VisibilityIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Modificar">
+                      <Tooltip title={t('common:modify')}>
                         <IconButton
                           component={Link}
                           to={`/producto/editar/${row.id_producto}`}
@@ -143,7 +145,7 @@ export default function TableProductos() {
                 ))}
               {data.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6}>No hay productos registrados.</TableCell>
+                  <TableCell colSpan={6}>{t('producto:table.empty')}</TableCell>
                 </TableRow>
               )}
               {emptyRows > 0 && (
@@ -163,21 +165,14 @@ export default function TableProductos() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage="Filas por página"
-          labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
-          getItemAriaLabel={(type) =>
-            ({
-              first: 'Primera página',
-              last: 'Última página',
-              next: 'Página siguiente',
-              previous: 'Página anterior',
-            })[type]
-          }
+          labelRowsPerPage={t('common:table.rowsPerPage')}
+          labelDisplayedRows={({ from, to, count }) => t('common:table.displayedRows', { from, to, count })}
+          getItemAriaLabel={(type) => t(`common:table.${type}`)}
         />
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Espaciado"
+        label={t('common:table.dense')}
       />
     </Box>
   );

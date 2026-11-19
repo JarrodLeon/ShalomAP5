@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import ProductoService from '../../services/ProductoService';
 import { ListCardProductos } from './ListCardProductos';
 
 export function CatalogProductos() {
+  const { t } = useTranslation();
   //Resultado de consumo del API, respuesta
   const [data, setData] = useState(null);
   //Error del API
@@ -25,13 +27,13 @@ export function CatalogProductos() {
       });
   }, []);
 
-  if (!loaded) return <p>Cargando..</p>; //Si no se ha cargado, mostrar mensaje de carga
-  if (error) return <p>Error: {error.message}</p>; //Si hay un error, mostrar mensaje de error
+  if (!loaded) return <p>{t('common:loading')}</p>; //Si no se ha cargado, mostrar mensaje de carga
+  if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>; //Si hay un error, mostrar mensaje de error
 
   return (
     <>
       <Typography variant="h4" component="h1" sx={{ p: 2 }}>
-        Nuestros productos
+        {t('producto:catalog.title')}
       </Typography>
       {/* Si hay datos, mostrar la lista de productos */}
       {data && <ListCardProductos data={data} />}

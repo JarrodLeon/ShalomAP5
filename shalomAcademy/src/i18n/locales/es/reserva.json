@@ -1,0 +1,31 @@
+{
+  "table": {
+    "title": "Historial de Reservas",
+    "dateTime": "Fecha y hora",
+    "client": "Cliente",
+    "service": "Servicio",
+    "status": "Estado"
+  },
+  "detail": {
+    "title": "Reserva N° {{id}}",
+    "generatedOn": "Reserva generada el",
+    "appointmentDate": "Fecha de la cita",
+    "time": "Hora",
+    "client": "Cliente",
+    "branch": "Sucursal",
+    "service": "Servicio",
+    "questions": "Preguntas de la reserva",
+    "q1": "1. ¿Ha practicado gimnasia antes?",
+    "q2": "2. ¿Tiene alguna lesión o condición médica?",
+    "q3": "3. ¿Cuál es el objetivo de la clase?"
+  },
+  "estados": {
+    "Pendiente": "Pendiente",
+    "Confirmada": "Confirmada",
+    "Reprogramada": "Reprogramada",
+    "Completada": "Completada",
+    "Cancelada": "Cancelada",
+    "No asistió": "No asistió",
+    "Vencida": "Vencida"
+  }
+}
