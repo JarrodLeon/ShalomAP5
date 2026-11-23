@@ -15,4 +15,17 @@ class usuario
             handleException($e);
         }
     }
+
+    //GET localhost:81/.../usuario/clientes - clientes para las reservas y facturas
+    public function clientes()
+    {
+        try {
+            $response = new Response();
+            $usuarioM = new UsuarioModel();
+            $result = $usuarioM->clientes();
+            $response->toJSON($result);
+        } catch (Exception $e) {
+            handleException($e);
+        }
+    }
 }

@@ -27,4 +27,20 @@ class UsuarioModel
             handleException($e);
         }
     }
+
+    /**
+     * Clientes (rol 1) para seleccionar en reservas y facturas: nombre completo y email
+     */
+    public function clientes()
+    {
+        try {
+            $vSQL = "SELECT id_usuario, nombre, correo
+                     FROM usuario
+                     WHERE id_rol = 1
+                     ORDER BY nombre;";
+            return $this->enlace->ExecuteSQL($vSQL);
+        } catch (Exception $e) {
+            handleException($e);
+        }
+    }
 }
