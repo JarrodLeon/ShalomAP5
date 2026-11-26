@@ -5,14 +5,22 @@ const BASE_URL = import.meta.env.VITE_BASE_URL + 'reserva';
 
 class ReservaService {
   //Lista de reservas de la sucursal del encargado
-  //localhost:81/apiShalomAcademy/reserva
+  //localhost:81/ShalomAcademy_P5/apiShalomAcademy/reserva
   getReservas() {
     return axios.get(BASE_URL);
   }
   //Obtener una reserva
-  //localhost:81/apiShalomAcademy/reserva/1
+  //localhost:81/ShalomAcademy_P5/apiShalomAcademy/reserva/get/1
   getReservaById(ReservaId) {
     return axios.get(BASE_URL + '/get/' + ReservaId);
+  }
+  //Encargado, sucursal y estado inicial (solo lectura) para el formulario
+  getContexto() {
+    return axios.get(BASE_URL + '/contexto');
+  }
+  //Registrar una reserva (el API crea también la factura proforma)
+  createReserva(Reserva) {
+    return axios.post(BASE_URL, JSON.stringify(Reserva));
   }
 }
 

@@ -2,9 +2,7 @@
 //localhost:81/ShalomAcademy_P5/apiShalomAcademy/reserva
 class reserva
 {
-    //Encargado que usa el sistema. Se define aquí en el Controlador:
-    //NO viaja desde la aplicación, por lo que el usuario no puede manipularlo.
-    //Solo verá y registrará las citas de la sucursal a la que pertenece.
+    //Encargado  
     private $idEncargado = 2;
 
     //GET Obtener el historial de reservas de la sucursal del encargado

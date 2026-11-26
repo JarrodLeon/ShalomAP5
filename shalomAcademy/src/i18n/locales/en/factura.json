@@ -5,7 +5,13 @@
     "date": "Date",
     "client": "Client",
     "total": "Total",
-    "viewInvoice": "View invoice"
+    "viewInvoice": "View invoice",
+    "create": "Create invoice",
+    "filterClient": "Filter by client",
+    "filterDate": "Filter by date",
+    "status": "Status",
+    "invoiceAction": "Invoice proforma",
+    "noResults": "No invoices match the filter."
   },
   "detail": {
     "title": "Invoice No. {{number}}",
@@ -30,7 +36,7 @@
   },
   "estados": {
     "Proforma": "Proforma",
-    "Completada": "Completed",
+    "Completada": "Invoiced",
     "Anulada": "Voided"
   },
   "personalizacion": {
@@ -45,5 +51,31 @@
     "Pedrería": "Rhinestones",
     "Brillo": "Glitter",
     "Liso": "Plain"
+  },
+  "form": {
+    "title": "Create Invoice",
+    "titleProforma": "Invoice Proforma #{{number}}",
+    "date": "Invoice date: {{date}}",
+    "branch": "Branch",
+    "client": "Client",
+    "clientName": "Full name: {{name}}",
+    "clientEmail": "Email: {{email}}",
+    "manager": "Manager",
+    "details": "Invoice details",
+    "addProduct": "Add product",
+    "addService": "Add service",
+    "type": "Type",
+    "item": "Product or service",
+    "price": "Price",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "lineTotal": "Line total",
+    "deleteLine": "Delete line",
+    "total": "Total",
+    "noLines": "Add products or services to the invoice.",
+    "created": "Invoice created #{{number}}",
+    "invoiced": "Proforma invoiced #{{number}}",
+    "notProforma": "The selected invoice does not exist or has already been invoiced"
   }
 }

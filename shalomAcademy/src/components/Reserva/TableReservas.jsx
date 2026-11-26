@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,10 +13,14 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import AddIcon from '@mui/icons-material/Add';
 import { Link } from 'react-router-dom';
 import ReservaService from '../../services/ReservaService';
 import { formatFecha, rangoHoras } from '../../utils/formatters';
+import { normalizar } from '../../utils/servicioFormat';
 import { getComparator, stableSort } from '../../utils/tableUtils';
 import { SortableTableHead } from '../Layout/SortableTableHead';
 import { EstadoChip } from './EstadoChip';
@@ -55,6 +59,9 @@ export default function TableReservas() {
   const [orderBy, setOrderBy] = useState('fecha_cita');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  //Filtros: por cliente y/o por fecha de la cita
+  const [filtroCliente, setFiltroCliente] = useState('');
+  const [filtroFecha, setFiltroFecha] = useState('');
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -68,78 +75,124 @@ export default function TableReservas() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  //Cambiar un filtro y volver a la primera página
+  const handleFiltroCliente = (event) => {
+    setFiltroCliente(event.target.value);
+    setPage(0);
+  };
+  const handleFiltroFecha = (event) => {
+    setFiltroFecha(event.target.value);
+    setPage(0);
+  };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
+  //Citas que cumplen los filtros (los dos son opcionales y se pueden combinar)
+  const filtrados = data.filter(
+    (reserva) =>
+      normalizar(reserva.cliente).includes(normalizar(filtroCliente)) &&
+      (!filtroFecha || reserva.fecha_cita.slice(0, 10) === filtroFecha),
+  );
+
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filtrados.length) : 0;
 
   if (!loaded) return <p>{t('common:loading')}</p>;
   if (error) return <p>{t('common:errorPrefix', { message: error.message })}</p>;
 
   return (
-    <>
-      {data && data.length > 0 && (
-        <Box sx={{ width: '100%' }}>
-          <Paper sx={{ width: '100%', mb: 2 }}>
-            <Toolbar>
-              <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
-                {t('reserva:table.title')}
-              </Typography>
-            </Toolbar>
-            <TableContainer>
-              <Table sx={{ minWidth: 650 }} aria-labelledby="tableTitle">
-                <SortableTableHead
-                  headCells={headCells}
-                  order={order}
-                  orderBy={orderBy}
-                  onRequestSort={handleRequestSort}
-                />
-                <TableBody>
-                  {stableSort(data, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => (
-                      <TableRow hover key={row.id_reserva}>
-                        <TableCell>
-                          {formatFecha(row.fecha_cita)}
-                          <Typography variant="caption" display="block" color="text.secondary">
-                            {rangoHoras(row.hora_inicio, row.hora_fin)}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>{row.cliente}</TableCell>
-                        <TableCell>{row.servicio}</TableCell>
-                        <TableCell>
-                          <EstadoChip nombre={row.nombre_estado} color={row.color_hex} />
-                        </TableCell>
-                        <TableCell>
-                          <Tooltip title={t('common:viewDetail')}>
-                            <IconButton component={Link} to={`/reserva/${row.id_reserva}`} color="primary">
-                              <VisibilityIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={5} />
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            {/* Paginación */}
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={data.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              labelRowsPerPage={t('common:table.rowsPerPage')}
-              labelDisplayedRows={({ from, to, count }) => t('common:table.displayedRows', { from, to, count })}
+    <Box sx={{ width: '100%' }}>
+      <Paper sx={{ width: '100%', mb: 2 }}>
+        <Toolbar sx={{ gap: 2, flexWrap: 'wrap', py: 1 }}>
+          <Typography sx={{ flex: '1 1 auto' }} variant="h6" id="tableTitle" component="div">
+            {t('reserva:table.title')}
+          </Typography>
+          {/* Filtro por cliente */}
+          <TextField
+            label={t('reserva:table.filterClient')}
+            variant="outlined"
+            size="small"
+            value={filtroCliente}
+            onChange={handleFiltroCliente}
+          />
+          {/* Filtro por fecha */}
+          <TextField
+            label={t('reserva:table.filterDate')}
+            type="date"
+            variant="outlined"
+            size="small"
+            value={filtroFecha}
+            onChange={handleFiltroFecha}
+            slotProps={{ inputLabel: { shrink: true } }}
+          />
+          {/* Registrar reserva */}
+          <Button
+            component={Link}
+            to="/reserva/crear/"
+            variant="contained"
+            color="secondary"
+            startIcon={<AddIcon />}
+          >
+            {t('reserva:table.create')}
+          </Button>
+        </Toolbar>
+        <TableContainer>
+          <Table sx={{ minWidth: 650 }} aria-labelledby="tableTitle">
+            <SortableTableHead
+              headCells={headCells}
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
             />
-          </Paper>
-        </Box>
-      )}
-    </>
+            <TableBody>
+              {stableSort(filtrados, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <TableRow hover key={row.id_reserva}>
+                    <TableCell>
+                      {formatFecha(row.fecha_cita)}
+                      <Typography variant="caption" display="block" color="text.secondary">
+                        {rangoHoras(row.hora_inicio, row.hora_fin)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>{row.cliente}</TableCell>
+                    <TableCell>{row.servicio}</TableCell>
+                    <TableCell>
+                      <EstadoChip nombre={row.nombre_estado} color={row.color_hex} />
+                    </TableCell>
+                    <TableCell>
+                      <Tooltip title={t('common:viewDetail')}>
+                        <IconButton component={Link} to={`/reserva/${row.id_reserva}`} color="primary">
+                          <VisibilityIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              {filtrados.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5}>{t('reserva:table.noResults')}</TableCell>
+                </TableRow>
+              )}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={5} />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {/* Paginación */}
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={filtrados.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={t('common:table.rowsPerPage')}
+          labelDisplayedRows={({ from, to, count }) => t('common:table.displayedRows', { from, to, count })}
+          getItemAriaLabel={(type) => t(`common:table.${type}`)}
+        />
+      </Paper>
+    </Box>
   );
 }

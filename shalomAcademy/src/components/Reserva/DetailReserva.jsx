@@ -9,7 +9,7 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import ReservaService from '../../services/ReservaService';
 import {
   esVerdadero,
@@ -110,6 +110,14 @@ export function DetailReserva() {
           </Dato>
           <Dato etiqueta={t('reserva:detail.q2')}>{data.condicion_medica}</Dato>
           <Dato etiqueta={t('reserva:detail.q3')}>{data.objetivo}</Dato>
+          {/* Enlace a la factura (proforma o facturada) asociada a la cita */}
+          {data.id_factura && (
+            <Box sx={{ mt: 2 }}>
+              <Button component={Link} to={`/factura/${data.id_factura}`} variant="outlined">
+                {t('reserva:detail.viewInvoice')}
+              </Button>
+            </Box>
+          )}
         </Paper>
       )}
       <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>

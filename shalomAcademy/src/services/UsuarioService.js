@@ -9,6 +9,11 @@ class UsuarioService {
   getEncargadosDisponibles(SucursalId = '') {
     return axios.get(BASE_URL + '/encargadosDisponibles/' + SucursalId);
   }
+  //Clientes (nombre y email) para las reservas y facturas
+  //localhost:81/ShalomAcademy_P5/apiShalomAcademy/usuario/clientes
+  getClientes() {
+    return axios.get(BASE_URL + '/clientes');
+  }
 }
 
 export default new UsuarioService();

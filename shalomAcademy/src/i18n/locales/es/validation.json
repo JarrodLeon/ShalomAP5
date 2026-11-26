@@ -32,5 +32,15 @@
   "horaFinMayor": "La hora final debe ser mayor que la hora de inicio",
   "imagenRequerida": "La imagen es requerida",
   "imagenTipo": "Solo se permiten imágenes jpeg, jpg, png o gif",
-  "imagenTamano": "La imagen no puede superar los 2 MB"
+  "imagenTamano": "La imagen no puede superar los 2 MB",
+  "clienteRequerido": "Seleccione un cliente",
+  "servicioRequerido": "Seleccione un servicio",
+  "practicaRequerida": "Seleccione una opción",
+  "condicionRequerida": "La condición médica es requerida (escriba Ninguna si no tiene)",
+  "objetivoRequerido": "El objetivo es requerido",
+  "cantidadRequerida": "La cantidad debe ser un número",
+  "cantidadEntera": "La cantidad debe ser un número entero",
+  "cantidadMin": "La cantidad debe ser mayor a cero",
+  "itemRequerido": "Seleccione un producto o servicio",
+  "lineasMin": "Agregue al menos una línea de detalle"
 }

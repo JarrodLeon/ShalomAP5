@@ -2,8 +2,7 @@
 //localhost:81/ShalomAcademy_P5/apiShalomAcademy/factura
 class factura
 {
-    //Encargado que usa el sistema. Se define aquí en el Controlador:
-    //NO viaja desde la aplicación, por lo que el usuario no puede manipularlo.
+    //Encargado que usa el sistema.
     private $idEncargado = 2;
 
     //GET Obtener el historial de facturas de la sucursal del encargado

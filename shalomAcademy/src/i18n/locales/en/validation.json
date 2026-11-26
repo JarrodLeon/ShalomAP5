@@ -32,5 +32,15 @@
   "horaFinMayor": "The end time must be later than the start time",
   "imagenRequerida": "The image is required",
   "imagenTipo": "Only jpeg, jpg, png or gif images are allowed",
-  "imagenTamano": "The image cannot exceed 2 MB"
+  "imagenTamano": "The image cannot exceed 2 MB",
+  "clienteRequerido": "Select a client",
+  "servicioRequerido": "Select a service",
+  "practicaRequerida": "Select an option",
+  "condicionRequerida": "The medical condition is required (write None if there is none)",
+  "objetivoRequerido": "The goal is required",
+  "cantidadRequerida": "The quantity must be a number",
+  "cantidadEntera": "The quantity must be a whole number",
+  "cantidadMin": "The quantity must be greater than zero",
+  "itemRequerido": "Select a product or service",
+  "lineasMin": "Add at least one detail line"
 }

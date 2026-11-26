@@ -4,7 +4,11 @@
     "dateTime": "Fecha y hora",
     "client": "Cliente",
     "service": "Servicio",
-    "status": "Estado"
+    "status": "Estado",
+    "create": "Registrar reserva",
+    "filterClient": "Filtrar por cliente",
+    "filterDate": "Filtrar por fecha",
+    "noResults": "No hay citas que coincidan con el filtro."
   },
   "detail": {
     "title": "Reserva N° {{id}}",
@@ -17,7 +21,8 @@
     "questions": "Preguntas de la reserva",
     "q1": "1. ¿Ha practicado gimnasia antes?",
     "q2": "2. ¿Tiene alguna lesión o condición médica?",
-    "q3": "3. ¿Cuál es el objetivo de la clase?"
+    "q3": "3. ¿Cuál es el objetivo de la clase?",
+    "viewInvoice": "Ver factura"
   },
   "estados": {
     "Pendiente": "Pendiente",
@@ -27,5 +32,25 @@
     "Cancelada": "Cancelada",
     "No asistió": "No asistió",
     "Vencida": "Vencida"
+  },
+  "form": {
+    "title": "Registrar Reserva",
+    "date": "Fecha",
+    "branch": "Sucursal",
+    "client": "Cliente",
+    "clientName": "Nombre completo: {{name}}",
+    "clientEmail": "Email: {{email}}",
+    "service": "Servicio",
+    "requiredTime": "Tiempo requerido: {{time}}",
+    "rate": "Tarifa: {{rate}}",
+    "startTime": "Hora de inicio",
+    "endTime": "Hora de finalización",
+    "crossesMidnight": "La reserva debe terminar el mismo día",
+    "questions": "Preguntas para el cliente",
+    "q1": "¿Ha practicado gimnasia antes?",
+    "q2": "¿Tiene alguna lesión o condición médica?",
+    "q3": "¿Cuál es el objetivo de la clase?",
+    "status": "Estado",
+    "created": "Reserva creada #{{id}}. Factura proforma #{{invoice}}"
   }
 }

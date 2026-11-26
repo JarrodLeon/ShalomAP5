@@ -4,7 +4,11 @@
     "dateTime": "Date and time",
     "client": "Client",
     "service": "Service",
-    "status": "Status"
+    "status": "Status",
+    "create": "Create reservation",
+    "filterClient": "Filter by client",
+    "filterDate": "Filter by date",
+    "noResults": "No appointments match the filter."
   },
   "detail": {
     "title": "Reservation No. {{id}}",
@@ -17,7 +21,8 @@
     "questions": "Reservation questions",
     "q1": "1. Has the client practiced gymnastics before?",
     "q2": "2. Does the client have any injury or medical condition?",
-    "q3": "3. What is the goal of the class?"
+    "q3": "3. What is the goal of the class?",
+    "viewInvoice": "View invoice"
   },
   "estados": {
     "Pendiente": "Pending",
@@ -27,5 +32,25 @@
     "Cancelada": "Cancelled",
     "No asistió": "No show",
     "Vencida": "Expired"
+  },
+  "form": {
+    "title": "Create Reservation",
+    "date": "Date",
+    "branch": "Branch",
+    "client": "Client",
+    "clientName": "Full name: {{name}}",
+    "clientEmail": "Email: {{email}}",
+    "service": "Service",
+    "requiredTime": "Required time: {{time}}",
+    "rate": "Rate: {{rate}}",
+    "startTime": "Start time",
+    "endTime": "End time",
+    "crossesMidnight": "The reservation must end on the same day",
+    "questions": "Questions for the client",
+    "q1": "Has the client practiced gymnastics before?",
+    "q2": "Does the client have any injury or medical condition?",
+    "q3": "What is the goal of the class?",
+    "status": "Status",
+    "created": "Reservation created #{{id}}. Proforma invoice #{{invoice}}"
   }
 }

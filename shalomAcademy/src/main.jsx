@@ -24,6 +24,9 @@ import TableFacturas from './components/Factura/TableFacturas';
 import { DetailFactura } from './components/Factura/DetailFactura';
 import TableReservas from './components/Reserva/TableReservas';
 import { DetailReserva } from './components/Reserva/DetailReserva';
+import { FormReserva } from './components/Reserva/FormReserva';
+import { FormFactura } from './components/Factura/FormFactura';
+
 
 const rutas = createBrowserRouter([
   {
@@ -55,9 +58,12 @@ const rutas = createBrowserRouter([
       { path: '/bloqueo/crear/', element: <FormHorario esBloqueo /> },
       //Facturas
       { path: '/factura', element: <TableFacturas /> },
+      { path: '/factura/crear/', element: <FormFactura /> },
+      { path: '/factura/facturar/:id', element: <FormFactura /> },
       { path: '/factura/:id', element: <DetailFactura /> },
       //Reservas
       { path: '/reserva', element: <TableReservas /> },
+      { path: '/reserva/crear/', element: <FormReserva /> },
       { path: '/reserva/:id', element: <DetailReserva /> },
     ],
   },

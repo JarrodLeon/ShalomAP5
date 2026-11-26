@@ -5,7 +5,13 @@
     "date": "Fecha",
     "client": "Cliente",
     "total": "Total",
-    "viewInvoice": "Ver factura"
+    "viewInvoice": "Ver factura",
+    "create": "Registrar factura",
+    "filterClient": "Filtrar por cliente",
+    "filterDate": "Filtrar por fecha",
+    "status": "Estado",
+    "invoiceAction": "Facturar proforma",
+    "noResults": "No hay facturas que coincidan con el filtro."
   },
   "detail": {
     "title": "Factura N° {{number}}",
@@ -30,7 +36,7 @@
   },
   "estados": {
     "Proforma": "Proforma",
-    "Completada": "Completada",
+    "Completada": "Facturada",
     "Anulada": "Anulada"
   },
   "personalizacion": {
@@ -45,5 +51,31 @@
     "Pedrería": "Pedrería",
     "Brillo": "Brillo",
     "Liso": "Liso"
+  },
+  "form": {
+    "title": "Registrar Factura",
+    "titleProforma": "Facturar Proforma #{{number}}",
+    "date": "Fecha de facturación: {{date}}",
+    "branch": "Sucursal",
+    "client": "Cliente",
+    "clientName": "Nombre completo: {{name}}",
+    "clientEmail": "Email: {{email}}",
+    "manager": "Encargado",
+    "details": "Detalle de la factura",
+    "addProduct": "Agregar producto",
+    "addService": "Agregar servicio",
+    "type": "Tipo",
+    "item": "Producto o servicio",
+    "price": "Precio",
+    "quantity": "Cantidad",
+    "subtotal": "Subtotal",
+    "tax": "Impuesto",
+    "lineTotal": "Total de línea",
+    "deleteLine": "Eliminar línea",
+    "total": "Total",
+    "noLines": "Agregue productos o servicios a la factura.",
+    "created": "Factura creada #{{number}}",
+    "invoiced": "Proforma facturada #{{number}}",
+    "notProforma": "La factura seleccionada no existe o ya fue facturada"
   }
 }
